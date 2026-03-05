@@ -18,23 +18,32 @@
     </header>
 
     <main>
-        <div class="container-pai">
+
+        <div class="container-pai" id="tela-principal">
+
             <div class="container">
                 <h1>🐰 Rifa de Páscoa do Terceirão RH 🍫</h1>
+
                 <div class="subtitle">Escolha quantos números quiser</div>
+
                 <div class="price">R$3,50 por número</div>
+
                 <div class="counter" id="counter">Carregando...</div>
 
                 <div class="legend">
+
                     <span>
                         <div class="box available"></div> Disponível
                     </span>
+
                     <span>
                         <div class="box selected"></div> Selecionado
                     </span>
+
                     <span>
                         <div class="box sold"></div> Vendido
                     </span>
+
                 </div>
 
                 <div class="numbers" id="numbers"></div>
@@ -46,18 +55,76 @@
                 <input type="text" id="name" placeholder="Seu nome">
                 <input type="text" id="turma" placeholder="Sua turma">
 
-                <button id="buyBtn">Reservar via WhatsApp</button>
+                <button id="buyBtn">Reservar números</button>
+
                 <div class="message" id="message"></div>
+
                 <div class="payment-info">
+
                     <p>💬 Entre em contato com a Manuela para confirmar o pagamento:</p>
-                    <p>📱 WhatsApp: <strong><a href="https://wa.me/5511971254661" target="_blank">11
-                                97125-4661</a></strong></p>
-                    <p>💰 Pagamento via PIX ou presencial. Envie o comprovante para ela.</p>
-                    <p> ❖ PIX: <strong>000.000.000-00</strong></p>
+
+                    <p>📱 WhatsApp:
+                        <strong>
+                            <a href="https://wa.me/5511971254661" target="_blank">
+                                11 97125-4661
+                            </a>
+                        </strong>
+                    </p>
+
+                    <p>💰 Pagamento via PIX ou presencial.</p>
+
+                    <p>❖ PIX: <strong id="chavePix">000.000.000-00</strong></p>
+
                 </div>
+
             </div>
+
         </div>
+
+
+        <!-- TELA DE PAGAMENTO -->
+        <div class="main">
+            <div id="tela-pagamento" style="display:none;">
+
+                <div class="container">
+
+                    <h2>💳 Finalizar pagamento</h2>
+
+                    <p><strong>Números:</strong> <span id="numConfirmado"></span></p>
+
+                    <p><strong>Nome:</strong> <span id="nomeConfirmado"></span></p>
+
+                    <p><strong>Turma:</strong> <span id="turmaConfirmada"></span></p>
+
+                    <hr>
+
+                    <h3>Pagamento via Pix</h3>
+
+                    <div class="pix-box">
+
+                        <span id="pixKey">000.000.000-00</span>
+
+                        <button onclick="copiarPix()">Copiar</button>
+
+                    </div>
+
+                    <p>
+                        <strong>Total:</strong>
+                        R$ <span id="valorFinal"></span>
+                    </p>
+
+                    <button id="btnWhatsapp">
+                        Enviar comprovante para Manuela
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </main>
+    </div>
 </body>
 
 </html>

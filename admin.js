@@ -24,24 +24,42 @@ const db = getFirestore(app);
 
 const lista = document.getElementById("listaReservas");
 const stats = document.getElementById("stats");
+const searchInput = document.getElementById("searchInput");
+
+let reservas = [];
 
 async function carregarReservas() {
+
     lista.innerHTML = "Carregando...";
 
     const querySnapshot = await getDocs(collection(db, "rifa"));
+
+    reservas = [];
+
+    querySnapshot.forEach((docSnap) => {
+        reservas.push({
+            id: docSnap.id,
+            ...docSnap.data()
+        });
+    });
+
+    renderizarReservas(reservas);
+}
+
+function renderizarReservas(listaReservas) {
 
     lista.innerHTML = "";
 
     let vendidos = 0;
     let reservados = 0;
 
-    querySnapshot.forEach((docSnap) => {
-        const data = docSnap.data();
+    listaReservas.forEach((data) => {
 
         if (data.status === "vendido") vendidos++;
         if (data.status === "reservado") reservados++;
 
         const div = document.createElement("div");
+
         div.style.border = "1px solid #ccc";
         div.style.padding = "10px";
         div.style.marginBottom = "20px";
@@ -53,12 +71,11 @@ async function carregarReservas() {
 <strong>Turma:</strong> ${data.turma}<br><br>
 <strong>Status:</strong> ${data.status}
 <br><br>
-<button onclick="confirmar('${docSnap.id}')">Confirmar pagamento</button>
-<button onclick="cancelar('${docSnap.id}')">Cancelar</button>
+<button onclick="confirmar('${data.id}')">Confirmar pagamento</button>
+<button onclick="cancelar('${data.id}')">Cancelar</button>
 `;
 
         lista.appendChild(div);
-
     });
 
     stats.innerHTML = `
@@ -66,7 +83,6 @@ async function carregarReservas() {
 <p>Reservados: <strong>${reservados}</strong></p>
 <p>Disponíveis: <strong>${100 - vendidos - reservados}</strong></p>
 `;
-
 }
 
 window.confirmar = async function (id) {
@@ -86,5 +102,18 @@ window.cancelar = async function (id) {
 
     carregarReservas();
 }
+
+searchInput.addEventListener("input", () => {
+
+    const termo = searchInput.value.toLowerCase();
+
+    const filtrados = reservas.filter((r) =>
+        r.name.toLowerCase().includes(termo) ||
+        String(r.number).includes(termo)
+    );
+
+    renderizarReservas(filtrados);
+
+});
 
 carregarReservas();

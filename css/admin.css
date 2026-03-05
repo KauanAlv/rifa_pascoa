@@ -10,6 +10,26 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.search{
+    display: flex;
+    justify-content: center;
+    border: 1px solid #ccc;
+    background-color: #00000006;
+    width: 400px;
+    margin: auto;
+    border-radius: 20px;
+    padding: 5px 10px;
+    color: #4b4b4b;
+}
+
+#searchInput{
+    padding: 8px;
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    outline: none;
+}
+
 /* Container principal */
 .container {
     background: #ffffff;

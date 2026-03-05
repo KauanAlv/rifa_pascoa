@@ -106,6 +106,7 @@ buyBtn.addEventListener("click", async () => {
         await addDoc(collection(db, "rifa"), {
             name: name,
             number: number,
+            turma: turma,
             createdAt: new Date()
         });
     }

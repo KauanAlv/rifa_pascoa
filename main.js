@@ -112,7 +112,7 @@ buyBtn.addEventListener("click", async () => {
     }
 
     const phone = "5511971254661";
-    const text = `Olá! Reservei os números ${selectedNumbers.join(", ")} da Rifa de Páscoa. Meu nome é ${name}. Total: R$${selectedNumbers.length * 5}.`;
+    const text = `Olá! Reservei os números ${selectedNumbers.join(", ")} da Rifa de Páscoa. Meu nome é ${name}. Total: R$${selectedNumbers.length * 3.5}.`;
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 
     window.open(url, "_blank");

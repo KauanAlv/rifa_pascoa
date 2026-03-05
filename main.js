@@ -17,7 +17,6 @@ const numbersContainer = document.getElementById("numbers");
 const counter = document.getElementById("counter");
 const summary = document.getElementById("summary");
 const buyBtn = document.getElementById("buyBtn");
-const message = document.getElementById("message");
 
 let soldNumbers = [];
 let selectedNumbers = [];
@@ -38,9 +37,7 @@ function createNumbers() {
         div.classList.add("number");
         div.innerText = i;
 
-        if (soldNumbers.includes(i)) {
-            div.classList.add("sold");
-        }
+        if (soldNumbers.includes(i)) div.classList.add("sold");
 
         div.addEventListener("click", () => {
             if (soldNumbers.includes(i)) return;
@@ -75,48 +72,53 @@ function updateSummary() {
 function updateCounter() {
     counter.innerText = `Disponíveis: ${100 - soldNumbers.length} | Vendidos: ${soldNumbers.length}`;
 }
+function showToast(msg, duration = 3000) {
+    let toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = msg;
+    document.body.appendChild(toast);
+
+    // força reflow pra animar
+    setTimeout(() => toast.classList.add("show"), 100);
+
+    // some sozinho
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => document.body.removeChild(toast), 300);
+    }, duration);
+}
 
 buyBtn.addEventListener("click", async () => {
     const name = document.getElementById("name").value.trim();
     const turma = document.getElementById("turma").value.trim();
 
-    if (!name) {
-        message.innerText = "Digite seu nome.";
-        return;
-    }
+    if (!name) return showToast("Digite seu nome.");
+    if (!turma) return showToast("Digite sua turma.");
+    if (selectedNumbers.length === 0) return showToast("Selecione pelo menos um número.");
 
-    if (!turma) {
-        message.innerText = "Digite sua turma.";
-        return;
-    }
-
-    if (selectedNumbers.length === 0) {
-        message.innerText = "Selecione pelo menos um número.";
-        return;
-    }
-
-    if (!confirm(`Confirmar reserva dos números ${selectedNumbers.join(", ")}?`)) {
-        return;
-    }
+    if (!confirm(`Confirmar reserva dos números ${selectedNumbers.join(", ")}?`)) return;
 
     buyBtn.disabled = true;
-    document.body.classList.add("loading");
 
     for (let number of selectedNumbers) {
-        await addDoc(collection(db, "rifa"), {
-            name: name,
-            number: number,
-            turma: turma,
-            createdAt: new Date()
-        });
+        if (!soldNumbers.includes(number)) {
+            await addDoc(collection(db, "rifa"), {
+                name,
+                turma,
+                number,
+                status: "reservado",
+                createdAt: new Date()
+            });
+        }
     }
 
-    const phone = "5511971254661";
-    const text = `Olá! Reservei os números ${selectedNumbers.join(", ")} da Rifa de Páscoa. Meu nome é ${name}. Total: R$${selectedNumbers.length * 3.5}.`;
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+    const phone = "5511946168749"; // WhatsApp da Manuela
+    const text = `Olá! Reservei os números ${selectedNumbers.join(", ")} da Rifa de Páscoa. Meu nome é ${name}, turma ${turma}. Total: R$${selectedNumbers.length * 3.5}.`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, "_blank");
 
-    window.open(url, "_blank");
-    location.reload();
+    selectedNumbers = [];
+    updateSummary();
+    buyBtn.disabled = false;
 });
 
 loadNumbers();

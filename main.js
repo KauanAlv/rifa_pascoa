@@ -2,6 +2,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"
 import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyByikN6_CXfiJnb1_0ppP60oBQxN8zVxYA",
@@ -137,7 +138,7 @@ buyBtn.addEventListener("click", async () => {
     const turma = document.getElementById("turma").value.trim()
 
     if (!name) return showToast("Digite seu nome.")
-    if (!turma) return showToast("Digite sua turma.")
+    if (!turma) return showToast("Escolha sua turma e turno.")
     if (selectedNumbers.length === 0) return showToast("Selecione pelo menos um número.")
 
     buyBtn.disabled = true
@@ -145,14 +146,22 @@ buyBtn.addEventListener("click", async () => {
     for (let number of selectedNumbers) {
 
         if (!soldNumbers.includes(number)) {
+            const docRef = doc(db, "rifa", number.toString());
 
-            await addDoc(collection(db, "rifa"), {
+            const snap = await getDoc(docRef);
+
+            if (snap.exists()) {
+                showToast("Esse número já foi reservado por outra pessoa.");
+                return;
+            }
+
+            await setDoc(docRef, {
                 name,
                 turma,
                 number,
                 status: "reservado",
-                createdAt: new Date()
-            })
+                createdAt: Date.now()
+            });
         }
     }
 

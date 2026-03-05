@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <script type="module" src="./main.js" defer></script>
     <title>Rifa de Páscoa - Terceirão RH</title>
 </head>
+
 <body>
     <header>
         <div class="div-terceirao">
@@ -47,8 +49,31 @@
                 </div>
 
                 <input type="text" id="name" placeholder="Nome completo">
-                <input type="text" id="turma" placeholder="Sua turma">
-
+                <select id="turma">
+                    <option value="">Selecione sua turma</option>
+                    <option value="Professor(a)">Professor(a)</option>
+                    <option value="1ºA RH - Manhã">1ºA RH - Manhã</option>
+                    <option value="2ºA RH - Manhã">2ºA RH - Manhã</option>
+                    <option value="3ºA RH - Manhã">3ºA RH - Manhã</option>
+                    <option value="1ºA ADM - Manhã">1ºA ADM - Manhã</option>
+                    <option value="2ºA ADM - Manhã">2ºA ADM - Manhã</option>
+                    <option value="3ºA ADM - Manhã">3ºA ADM - Manhã</option>
+                    <option value="1ºB ADM - Tarde">1ºB ADM - Tarde</option>
+                    <option value="2ºB ADM - Tarde">2ºB ADM - Tarde</option>
+                    <option value="3ºB ADM - Tarde">3ºB ADM - Tarde</option>
+                    <option value="1ºC ADM - Tarde">1ºC ADM - Tarde</option>
+                    <option value="2ºC ADM - Tarde">2ºC ADM - Tarde</option>
+                    <option value="3ºC ADM - Tarde">3ºC ADM - Tarde</option>
+                    <option value="Administração Mód. 1 - Noite">Administração Mód. 1 - Noite</option>
+                    <option value="Administração Mód. 2 - Noite">Administração Mód. 2 - Noite</option>
+                    <option value="Administração Mód. 3 - Noite">Administração Mód. 3 - Noite</option>
+                    <option value="Serviços Jurídicos Mód. 1 - Noite">Serviços Jurídicos Mód. 1 - Noite</option>
+                    <option value="Serviços Jurídicos Mód. 2 - Noite">Serviços Jurídicos Mód. 2 - Noite</option>
+                    <option value="Serviços Jurídicos Mód. 3 - Noite">Serviços Jurídicos Mód. 3 - Noite</option>
+                    <option value="Serviços Públicos Mód. 1 - Noite">Serviços Públicos Mód. 1 - Noite</option>
+                    <option value="Serviços Públicos Mód. 2 - Noite">Serviços Públicos Mód. 2 - Noite</option>
+                </select>
+                
                 <button id="buyBtn">Reservar números</button>
 
                 <div class="message" id="message"></div>
@@ -66,7 +91,8 @@
 
                     <p>💰 Pagamento via PIX ou presencial.</p>
 
-                    <p onclick="copiarPix()">❖ PIX: <strong id="chavePix">caixarecursoshumanos.etec@gmail.com</strong></p>
+                    <p onclick="copiarPix()">❖ PIX: <strong id="chavePix">caixarecursoshumanos.etec@gmail.com</strong>
+                    </p>
                 </div>
             </div>
         </div>
@@ -107,4 +133,5 @@
     </main>
     </div>
 </body>
+
 </html>

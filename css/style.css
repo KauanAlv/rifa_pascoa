@@ -4,7 +4,6 @@ body {
     flex-direction: column;
     min-height: 100vh;
     font-family: Arial, sans-serif;
-    margin: 0;
 }
 
 header {
@@ -116,7 +115,7 @@ h1 {
     cursor: pointer;
     background: #f1f1f1;
     font-weight: bold;
-    transition: .2s;
+    transition: 0.2s;
 }
 
 .number:hover {
@@ -131,7 +130,7 @@ h1 {
 
 .number.sold {
     background: #ccc;
-    color: #666;
+    color: #665;
     cursor: not-allowed;
 }
 
@@ -144,12 +143,14 @@ h1 {
 }
 
 input,
-button {
+button,
+#turma {
     width: 100%;
     padding: 12px;
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 15px;
+    color: #665;
 }
 
 button {
@@ -158,11 +159,11 @@ button {
     border: none;
     font-weight: bold;
     cursor: pointer;
-    transition: .3s;
+    transition: 0.3s;
 }
 
 button:hover {
-    opacity: .9;
+    opacity: 0.9;
 }
 
 button:disabled {

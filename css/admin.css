@@ -1,0 +1,106 @@
+/* Fundo da página */
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* muda aqui */
+    padding: 20px 10px;      /* espaço nas laterais */
+    background: linear-gradient(135deg, #c00000, #000000);
+    font-family: Arial, sans-serif;
+}
+
+/* Container principal */
+.container {
+    background: #ffffff;
+    width: 90%;
+    max-width: 700px;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Título principal */
+h1 {
+    text-align: center;
+    margin: 0;
+    color: #c00000;
+}
+
+/* Subtítulo */
+h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Estatísticas */
+#stats {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+/* Lista de reservas */
+#listaReservas div {
+    background: #fafafa;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+/* Botões */
+button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 8px;
+    transition: 0.2s;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+button:first-of-type {
+    background: #28a745; /* confirmar */
+    color: white;
+}
+
+button:last-of-type {
+    background: #dc3545; /* cancelar */
+    color: white;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+
+    body {
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px;
+        border-radius: 14px;
+    }
+
+    #listaReservas div {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    button {
+        width: 100%;
+        margin-right: 0;
+    }
+}

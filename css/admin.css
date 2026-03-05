@@ -4,13 +4,15 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* muda aqui */
-    padding: 20px 10px;      /* espaço nas laterais */
+    align-items: flex-start;
+    /* muda aqui */
+    padding: 20px 10px;
+    /* espaço nas laterais */
     background: linear-gradient(135deg, #c00000, #000000);
     font-family: Arial, sans-serif;
 }
 
-.search{
+.search {
     display: flex;
     justify-content: center;
     border: 1px solid #ccc;
@@ -22,7 +24,7 @@ body {
     color: #4b4b4b;
 }
 
-#searchInput{
+#searchInput {
     padding: 8px;
     border: none;
     background-color: transparent;
@@ -89,12 +91,14 @@ button:hover {
 }
 
 button:first-of-type {
-    background: #28a745; /* confirmar */
+    background: #28a745;
+    /* confirmar */
     color: white;
 }
 
 button:last-of-type {
-    background: #dc3545; /* cancelar */
+    background: #dc3545;
+    /* cancelar */
     color: white;
 }
 
@@ -122,5 +126,9 @@ button:last-of-type {
     button {
         width: 100%;
         margin-right: 0;
+    }
+
+    .search {
+        width: 260px;
     }
 }

@@ -375,17 +375,16 @@ button:disabled {
     .container-pai {
         width: 90%;
     }
+    
+    .ovo {
+        height: 19rem;
+        width: 19rem;
+    }
 
     .premio {
-        font-size: 13px;
+        font-size: 20px;
         padding: 8px 12px;
     }
-
-    .ovo {
-        height: 10rem;
-        width: 10rem;
-    }
-
 }
 
 @media (max-width: 600px) {
@@ -420,6 +419,16 @@ button:disabled {
 
     .pix-box button {
         width: 100%;
+    }
+
+    .ovo {
+        height: 10rem;
+        width: 10rem;
+    }
+
+    .premio {
+        font-size: 12px;
+        padding: 8px 12px;
     }
 
     #btnWhatsapp {

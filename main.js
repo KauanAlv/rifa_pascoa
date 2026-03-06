@@ -141,7 +141,7 @@ function mostrarTelaPagamento(numeros, nome, turma) {
 
     document.getElementById("btnWhatsapp").onclick = function () {
         window.open(
-            `https://wa.me/5511971254661?text=${encodeURIComponent(mensagem)}`,
+            `https://wa.me/5511946168749?text=${encodeURIComponent(mensagem)}`,
             "_blank"
         )
     }

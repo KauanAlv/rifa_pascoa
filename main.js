@@ -80,7 +80,7 @@ Total: <strong>R$ ${total}</strong>
 }
 
 function updateCounter() {
-    counter.innerText = `Disponíveis: ${100 - soldNumbers.length} | Vendidos: ${soldNumbers.length}`
+    counter.innerText = `Disponíveis: ${150 - soldNumbers.length} | Vendidos: ${soldNumbers.length}`
 }
 
 function showToast(msg, duration = 3000) {

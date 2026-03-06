@@ -106,6 +106,10 @@ window.cancelar = async function (id) {
     carregarReservas();
 }
 
+setInterval(() => {
+    location.reload();
+}, 10000);
+
 searchInput.addEventListener("input", () => {
 
     const termo = searchInput.value.toLowerCase();

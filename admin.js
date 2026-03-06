@@ -81,7 +81,7 @@ function renderizarReservas(listaReservas) {
     stats.innerHTML = `
 <p>Vendidos: <strong>${vendidos}</strong></p>
 <p>Reservados: <strong>${reservados}</strong></p>
-<p>Disponíveis: <strong>${100 - vendidos - reservados}</strong></p>
+<p>Disponíveis: <strong>${150 - vendidos - reservados}</strong></p>
 `;
 }
 

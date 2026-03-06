@@ -59,9 +59,9 @@ function renderizarReservas(listaReservas) {
     let vendidos = 0;
     let reservados = 0;
 
-    listaReservas.forEach((dataUpper) => {
+    listaReservas.forEach((data) => {
 
-        let dataUpper = String(dataUpper).toUpperCase()
+        let dataUpper = String(data).toUpperCase()
 
         if (dataUpper.status === "VENDIDO") vendidos++;
         if (dataUpper.status === "RESERVADO") reservados++;

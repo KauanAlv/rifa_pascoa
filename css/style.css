@@ -370,7 +370,11 @@ button:disabled {
     background: #25D366;
 }
 
-@media (max-width:600px) {
+@media (max-width: 1024px) {
+
+    .container-pai {
+        width: 100%;
+    }
 
     .premio {
         font-size: 13px;
@@ -384,7 +388,7 @@ button:disabled {
 
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
 
     h1 {
         font-size: 1.6rem;
@@ -395,35 +399,35 @@ button:disabled {
     body {
         padding: 15px;
     }
-}
 
-.container {
-    width: 100%;
-    padding: 20px;
-}
+    .container {
+        width: 100%;
+        padding: 20px;
+    }
 
-.pix-box {
-    flex-direction: column;
-    align-items: flex-start;
-}
+    .pix-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-.pix-box span {
-    font-size: 92%;
-}
+    .pix-box span {
+        font-size: 92%;
+    }
 
-.pix-box button {
-    width: 100%;
-}
+    .pix-box button {
+        width: 100%;
+    }
 
-#btnWhatsapp {
-    width: 100%;
-}
+    #btnWhatsapp {
+        width: 100%;
+    }
 
-.number {
-    padding: 8px;
-    font-size: 13px;
-}
+    .number {
+        padding: 8px;
+        font-size: 13px;
+    }
 
-.legend {
-    flex-wrap: wrap;
+    .legend {
+        flex-wrap: wrap;
+    }
 }

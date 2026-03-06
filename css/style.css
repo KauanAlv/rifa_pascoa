@@ -330,6 +330,39 @@ button:disabled {
     font-weight: bold;
 }
 
+.insta-sala {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: none;
+    font-size: 14px;
+    color: #856404;
+    text-align: center;
+}
+
+.insta-sala a {
+    color: rgb(247, 103, 103);
+}
+
+.devs {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #856404;
+    text-align: center;
+}
+
+.devs a {
+    color: rgb(247, 103, 103);
+    text-decoration: none;
+    font-weight: bold;
+}
+
 #chavePix {
     cursor: pointer;
 }
@@ -375,7 +408,7 @@ button:disabled {
     .container-pai {
         width: 90%;
     }
-    
+
     .ovo {
         height: 19rem;
         width: 19rem;

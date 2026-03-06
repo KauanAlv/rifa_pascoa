@@ -137,9 +137,9 @@ buyBtn.addEventListener("click", async () => {
     const name = document.getElementById("name").value.trim()
     const turma = document.getElementById("turma").value.trim()
     const nomeInput = document.getElementById("name")
-    const nome = nomeInput.value.trim();
+    const nomeSemNum = nomeInput.value.trim();
 
-    if (!/^[A-Za-zÀ-ÿ\s]+$/.test(nome)) {
+    if (!/^[A-Za-zÀ-ÿ\s]+$/.test(nomeSemNum)) {
         alert("Digite um nome válido (apenas letras).")
 
         nomeInput.value = ""
@@ -177,6 +177,26 @@ buyBtn.addEventListener("click", async () => {
     mostrarTelaPagamento(selectedNumbers, name, turma)
 
     buyBtn.disabled = false
+})
+
+
+const campoNome = document.getElementById("name")
+
+campoNome.addEventListener("input", function () {
+
+    let nome = this.value
+
+    nome = nome.replace(/[^A-Za-zÀ-ÿ\s]/g, "")
+    nome = nome.toLowerCase();
+
+    nome = nome.split(" ").map(palavra => {
+        if (palavra.length > 0) {
+            return palavra.charAt(0).toUpperCase() + palavra.slice(1)
+        }
+        return ""
+    }).join(" ")
+
+    this.value = nome
 })
 
 loadNumbers()

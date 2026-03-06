@@ -20,6 +20,8 @@ const numbersContainer = document.getElementById("numbers")
 const counter = document.getElementById("counter")
 const summary = document.getElementById("summary")
 const buyBtn = document.getElementById("buyBtn")
+const agora = new Date()
+const dataHora = agora.toLocaleString("pt-BR")
 
 let soldNumbers = []
 let selectedNumbers = []
@@ -169,7 +171,9 @@ buyBtn.addEventListener("click", async () => {
                 turma,
                 number,
                 status: "reservado",
-                createdAt: Date.now()
+                createdAt: Date.now(),
+                dataHora
+
             });
         }
     }

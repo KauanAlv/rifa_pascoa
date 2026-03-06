@@ -25,6 +25,8 @@ const db = getFirestore(app);
 const lista = document.getElementById("listaReservas");
 const stats = document.getElementById("stats");
 const searchInput = document.getElementById("searchInput");
+const agora = new Date()
+const dataHora = agora.toLocaleString("pt-BR")
 
 let reservas = [];
 
@@ -69,7 +71,8 @@ function renderizarReservas(listaReservas) {
 <strong><br>Número:</strong> ${data.number}<br><br>
 <strong>Nome:</strong> ${data.name}<br><br>
 <strong>Turma:</strong> ${data.turma}<br><br>
-<strong>Status:</strong> ${data.status}
+<strong>Status:</strong> ${data.status}<br><br>
+<strong>Data:</strong> ${dataHora}
 <br><br>
 <button onclick="confirmar('${data.id}')">Confirmar pagamento</button>
 <button onclick="cancelar('${data.id}')">Cancelar</button>

@@ -186,6 +186,7 @@ buyBtn.addEventListener("click", async () => {
 
 const campoNome = document.getElementById("name")
 
+
 campoNome.addEventListener("input", function () {
 
     let nome = this.value
@@ -202,5 +203,8 @@ campoNome.addEventListener("input", function () {
 
     this.value = nome
 })
+setInterval(() => {
+    location.reload();
+}, 10000);
 
 loadNumbers()

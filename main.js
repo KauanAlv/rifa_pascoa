@@ -1,9 +1,14 @@
 'use strict'
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { runTransaction, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    setDoc,
+    getDoc,
+    runTransaction
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
 
 const firebaseConfig = {
     apiKey: "AIzaSyByikN6_CXfiJnb1_0ppP60oBQxN8zVxYA",
@@ -161,29 +166,38 @@ buyBtn.addEventListener("click", async () => {
 
     buyBtn.disabled = true
 
-    for (let number of selectedNumbers) {
+    try {
 
-        if (!soldNumbers.includes(number)) {
-            const docRef = doc(db, "rifa", number.toString());
+        for (let number of selectedNumbers) {
 
-            const snap = await getDoc(docRef);
+            const ref = doc(db, "rifa", number.toString())
 
-            if (snap.exists()) {
-                showToast("Esse número já foi reservado por outra pessoa.");
-                return;
-            }
+            await runTransaction(db, async (transaction) => {
 
-            await setDoc(docRef, {
-                name,
-                turma,
-                number,
-                status: "reservado",
-                createdAt: Date.now(),
-                date,
-                hora
+                const snap = await transaction.get(ref)
 
-            });
+                if (snap.exists()) {
+                    throw new Error("Número já reservado")
+                }
+
+                transaction.set(ref, {
+                    name,
+                    turma,
+                    number,
+                    status: "reservado",
+                    createdAt: Date.now()
+                })
+
+            })
+
         }
+
+        mostrarTelaPagamento(selectedNumbers, name, turma)
+
+    } catch (e) {
+
+        showToast("Um dos números já foi reservado por outra pessoa.")
+
     }
 
     mostrarTelaPagamento(selectedNumbers, name, turma)

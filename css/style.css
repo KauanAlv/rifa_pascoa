@@ -54,7 +54,7 @@ main {
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: 28px;
+    font-size: 1.8rem;
     animation: flutuar-emoji 4s ease-in-out infinite;
 }
 

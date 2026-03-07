@@ -62,7 +62,7 @@ function renderizarReservas(listaReservas) {
     listaReservas.forEach((data) => {
 
         if (data.status === "VENDIDO") vendidos++;
-        if (data.status === "RESERVADO") reservados++;
+        if (data.status === "reservado") reservados++;
 
         let dataFormatada = "-";
         let horaFormatada = "-";

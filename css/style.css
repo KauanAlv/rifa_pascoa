@@ -363,6 +363,8 @@ button:disabled {
 }
 
 .instas {
+    display: flex;
+    flex-direction: column;
     text-align: center;
     color: #856404;
     background: #fff3cd;
@@ -376,6 +378,8 @@ button:disabled {
 .instas a {
     color: rgb(247, 103, 103);
     font-weight: bold;
+    width: 100%;
+    justify-content: center;
 }
 
 .instas .sala {
@@ -489,7 +493,7 @@ button:disabled {
     .container::before {
         content: "🐰 🍫 🐰 🍫 🐰 🍫 🐰 🍫 🐰 🍫";
         font-size: 20px;
-        top: -18px;
+        top: -16px;
     }
 
     .pix-box {

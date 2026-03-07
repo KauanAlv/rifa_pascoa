@@ -330,37 +330,43 @@ button:disabled {
     font-weight: bold;
 }
 
-.insta-sala {
+.instas {
+    text-align: center;
+    color: #856404;
     background: #fff3cd;
     border: 1px solid #ffeeba;
-    padding: 12px;
     border-radius: 8px;
-    margin-top: 10px;
-    margin-bottom: none;
+    padding: 12px 5px 10px 5px;
+    margin-top: 5px;
     font-size: 14px;
-    color: #856404;
-    text-align: center;
 }
 
-.insta-sala a {
+.instas a {
     color: rgb(247, 103, 103);
-}
-
-.devs {
-    background: #fff3cd;
-    border: 1px solid #ffeeba;
-    padding: 12px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-size: 14px;
-    color: #856404;
-    text-align: center;
-}
-
-.devs a {
-    color: rgb(247, 103, 103);
-    text-decoration: none;
     font-weight: bold;
+}
+
+.lista-devs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    color: #856404;
+    padding: 0.4rem;
+    gap: 3px;
+}
+
+.dev-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgb(247, 103, 103);
+    font-weight: bold;
+    width: 130px;
+}
+
+.icon {
+    width: 20px;
 }
 
 #chavePix {

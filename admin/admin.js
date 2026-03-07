@@ -12,7 +12,7 @@
 
 'use strict'
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'
 import {
     getFirestore,
     collection,
@@ -20,28 +20,28 @@ import {
     updateDoc,
     doc,
     deleteDoc
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyByikN6_CXfiJnb1_0ppP60oBQxN8zVxYA",
-    authDomain: "site-para-rifa-de-pascoa-25745.firebaseapp.com",
-    projectId: "site-para-rifa-de-pascoa-25745",
-    storageBucket: "site-para-rifa-de-pascoa-25745.firebasestorage.app",
-    messagingSenderId: "1004843167683",
-    appId: "1:1004843167683:web:93211e8925926723c3d776"
+    apiKey: 'AIzaSyByikN6_CXfiJnb1_0ppP60oBQxN8zVxYA',
+    authDomain: 'site-para-rifa-de-pascoa-25745.firebaseapp.com',
+    projectId: 'site-para-rifa-de-pascoa-25745',
+    storageBucket: 'site-para-rifa-de-pascoa-25745.firebasestorage.app',
+    messagingSenderId: '1004843167683',
+    appId: '1:1004843167683:web:93211e8925926723c3d776'
 }
 
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
-const lista = document.getElementById("listaReservas")
-const stats = document.getElementById("stats")
-const searchInput = document.getElementById("searchInput")
+const lista = document.getElementById('listaReservas')
+const stats = document.getElementById('stats')
+const searchInput = document.getElementById('searchInput')
 
 let reservas = []
 
 function escutarReservas() {
-    onSnapshot(collection(db, "rifa"), (snapshot) => {
+    onSnapshot(collection(db, 'rifa'), (snapshot) => {
         reservas = []
 
         snapshot.forEach((docSnap) => {
@@ -58,33 +58,33 @@ function escutarReservas() {
 }
 
 function renderizarReservas(listaReservas) {
-    lista.innerHTML = ""
+    lista.innerHTML = ''
 
     let vendidos = 0
     let reservados = 0
 
     listaReservas.forEach((data) => {
-        if (data.status === "VENDIDO") vendidos++
-        if (data.status === "reservado") reservados++
+        if (data.status === 'VENDIDO') vendidos++
+        if (data.status === 'reservado') reservados++
 
-        let dataFormatada = "-"
-        let horaFormatada = "-"
+        let dataFormatada = '-'
+        let horaFormatada = '-'
 
         if (data.createdAt) {
 
             const dataFirebase = new Date(data.createdAt)
 
-            dataFormatada = dataFirebase.toLocaleDateString("pt-BR")
-            horaFormatada = dataFirebase.toLocaleTimeString("pt-BR")
+            dataFormatada = dataFirebase.toLocaleDateString('pt-BR')
+            horaFormatada = dataFirebase.toLocaleTimeString('pt-BR')
 
         }
 
-        const div = document.createElement("div")
+        const div = document.createElement('div')
 
-        div.style.border = "1px solid #ccc"
-        div.style.padding = "10px"
-        div.style.marginBottom = "20px"
-        div.style.borderRadius = "8px"
+        div.style.border = '1px solid #ccc'
+        div.style.padding = '10px'
+        div.style.marginBottom = '20px'
+        div.style.borderRadius = '8px'
 
         div.innerHTML = `
 <strong>Número:</strong> ${data.number}<br><br>
@@ -94,8 +94,8 @@ function renderizarReservas(listaReservas) {
 <strong>Data:</strong> ${dataFormatada}<br><br>
 <strong>Hora:</strong> ${horaFormatada}
 <br><br>
-<button onclick="confirmar('${data.id}')">Confirmar pagamento</button>
-<button onclick="cancelar('${data.id}')">Cancelar</button>
+<button onclick='confirmar('${data.id}')'>Confirmar pagamento</button>
+<button onclick='cancelar('${data.id}')'>Cancelar</button>
 `
 
         lista.appendChild(div)
@@ -110,23 +110,23 @@ function renderizarReservas(listaReservas) {
 }
 
 window.confirmar = async function (id) {
-    await updateDoc(doc(db, "rifa", id), {
-        status: "VENDIDO"
+    await updateDoc(doc(db, 'rifa', id), {
+        status: 'VENDIDO'
     })
 
-    alert("Pagamento confirmado!")
+    alert('Pagamento confirmado!')
 
 }
 
 window.cancelar = async function (id) {
-    await deleteDoc(doc(db, "rifa", id))
+    await deleteDoc(doc(db, 'rifa', id))
 
-    alert("Reserva cancelada")
+    alert('Reserva cancelada')
 }
 
 reservas.sort((a, b) => a.number - b.number)
 
-searchInput.addEventListener("input", () => {
+searchInput.addEventListener('input', () => {
     const termo = searchInput.value.toUpperCase()
 
     const filtrados = reservas.filter((r) =>

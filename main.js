@@ -1,6 +1,6 @@
 /*****************************************************************************************
  * Objetivo: Arquivo responsável por controlar a parte principal do site, onde os usuários
-   podem selecionar os números da rifa, inserir seus dados e finalizar a compra.
+   podem selecionar os números.
  * Data: 04/03/2026 (quarta-feira)
  * Autor(es):
     - Gustavo Vidal de Abreu
@@ -12,40 +12,40 @@
 
 'use strict'
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'
 import {
     getFirestore,
     collection,
     getDocs,
     doc,
     runTransaction
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyByikN6_CXfiJnb1_0ppP60oBQxN8zVxYA",
-    authDomain: "site-para-rifa-de-pascoa-25745.firebaseapp.com",
-    projectId: "site-para-rifa-de-pascoa-25745",
-    storageBucket: "site-para-rifa-de-pascoa-25745.firebasestorage.app",
-    messagingSenderId: "1004843167683",
-    appId: "1:1004843167683:web:93211e8925926723c3d776"
+    apiKey: 'AIzaSyByikN6_CXfiJnb1_0ppP60oBQxN8zVxYA',
+    authDomain: 'site-para-rifa-de-pascoa-25745.firebaseapp.com',
+    projectId: 'site-para-rifa-de-pascoa-25745',
+    storageBucket: 'site-para-rifa-de-pascoa-25745.firebasestorage.app',
+    messagingSenderId: '1004843167683',
+    appId: '1:1004843167683:web:93211e8925926723c3d776'
 }
 
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
-const numbersContainer = document.getElementById("numbers")
-const counter = document.getElementById("counter")
-const summary = document.getElementById("summary")
-const buyBtn = document.getElementById("buyBtn")
+const numbersContainer = document.getElementById('numbers')
+const counter = document.getElementById('counter')
+const summary = document.getElementById('summary')
+const buyBtn = document.getElementById('buyBtn')
 const agora = new Date()
-const date = agora.toLocaleDateString("pt-BR")
-const hora = agora.toLocaleTimeString("pt-BR")
+const date = agora.toLocaleDateString('pt-BR')
+const hora = agora.toLocaleTimeString('pt-BR')
 
 let soldNumbers = []
 let selectedNumbers = []
 
 async function loadNumbers() {
-    const querySnapshot = await getDocs(collection(db, "rifa"))
+    const querySnapshot = await getDocs(collection(db, 'rifa'))
 
     querySnapshot.forEach(doc => {
         soldNumbers.push(doc.data().number)
@@ -60,24 +60,24 @@ function createNumbers() {
 
         setTimeout(() => {
 
-            const div = document.createElement("div")
+            const div = document.createElement('div')
 
-            div.classList.add("number")
+            div.classList.add('number')
             div.innerText = i
 
             if (soldNumbers.includes(i)) {
-                div.classList.add("sold")
+                div.classList.add('sold')
             }
 
-            div.addEventListener("click", () => {
+            div.addEventListener('click', () => {
                 if (soldNumbers.includes(i)) return
 
                 if (selectedNumbers.includes(i)) {
                     selectedNumbers = selectedNumbers.filter(n => n !== i)
-                    div.classList.remove("selected")
+                    div.classList.remove('selected')
                 } else {
                     selectedNumbers.push(i)
-                    div.classList.add("selected")
+                    div.classList.add('selected')
                 }
 
                 updateSummary()
@@ -91,14 +91,14 @@ function createNumbers() {
 
 function updateSummary() {
     if (selectedNumbers.length === 0) {
-        summary.innerText = "Nenhum número selecionado."
+        summary.innerText = 'Nenhum número selecionado.'
         return
     }
 
     const total = (selectedNumbers.length * 3.5).toFixed(2)
 
     summary.innerHTML = `
-Números: <strong>${selectedNumbers.join(", ")}</strong><br>
+Números: <strong>${selectedNumbers.join(', ')}</strong><br>
 Total: <strong>R$ ${total}</strong>
 `
 
@@ -109,96 +109,94 @@ function updateCounter() {
 }
 
 function showToast(msg, duration = 3000) {
-    let toast = document.createElement("div")
+    let toast = document.createElement('div')
 
-    toast.className = "toast"
+    toast.className = 'toast'
     toast.innerText = msg
 
     document.body.appendChild(toast)
 
-    setTimeout(() => toast.classList.add("show"), 100)
+    setTimeout(() => toast.classList.add('show'), 100)
 
     setTimeout(() => {
-        toast.classList.remove("show")
+        toast.classList.remove('show')
         setTimeout(() => document.body.removeChild(toast), 300)
     }, duration)
 }
 
 function copiarPix() {
-    const chave = document.getElementById("pixKey").innerText
+    const chave = document.getElementById('pixKey').innerText
 
     navigator.clipboard.writeText(chave)
 
-    showToast("Chave Pix copiada!")
+    showToast('Chave Pix copiada!')
 }
 
 window.copiarPix = copiarPix
 
-buyBtn.addEventListener("click", async () => {
-    const name = document.getElementById("name").value.trim()
-    const turma = document.getElementById("turma").value.trim()
-    const nomeInput = document.getElementById("name")
+buyBtn.addEventListener('click', async () => {
+    const name = document.getElementById('name').value.trim()
+    const turma = document.getElementById('turma').value.trim()
+    const nomeInput = document.getElementById('name')
     const nomeSemNum = nomeInput.value.trim()
 
-    if (selectedNumbers.length === 0) return showToast("Selecione pelo menos um número.")
+    if (selectedNumbers.length === 0) return showToast('Selecione pelo menos um número.')
     if (!/^[A-Za-zÀ-ÿ\s]+$/.test(nomeSemNum)) {
-        nomeInput.value = ""
+        nomeInput.value = ''
         nomeInput.focus()
-        return showToast("Digite seu nome.")
+        return showToast('Digite seu nome.')
     }
-    if (!name) return showToast("Digite seu nome.")
-    if (!turma) return showToast("Escolha sua turma e turno.")
+    if (!name) return showToast('Digite seu nome.')
+    if (!turma) return showToast('Escolha sua turma e turno.')
 
     buyBtn.disabled = true
 
     try {
         for (let number of selectedNumbers) {
-            const ref = doc(db, "rifa", number.toString())
+            const ref = doc(db, 'rifa', number.toString())
 
             await runTransaction(db, async (transaction) => {
                 const snap = await transaction.get(ref)
 
                 if (snap.exists()) {
-                    throw new Error("Número já reservado")
+                    throw new Error('Número já reservado')
                 }
 
                 transaction.set(ref, {
                     name,
                     turma,
                     number,
-                    status: "reservado",
+                    status: 'reservado',
                     createdAt: Date.now()
                 })
             })
         }
 
-        localStorage.setItem("numeros", JSON.stringify(selectedNumbers))
-        localStorage.setItem("nome", name)
-        localStorage.setItem("turma", turma)
+        localStorage.setItem('numeros', JSON.stringify(selectedNumbers))
+        localStorage.setItem('nome', name)
+        localStorage.setItem('turma', turma)
 
-        window.location.href = "./pages/pagamento.html"
+        window.location.href = './pages/pagamento.html'
     } catch (e) {
-        showToast("Um dos números já foi reservado por outra pessoa.")
+        showToast('Um dos números já foi reservado por outra pessoa.')
         buyBtn.disabled = false
     }
 })
 
+const campoNome = document.getElementById('name')
 
-const campoNome = document.getElementById("name")
-
-
-campoNome.addEventListener("input", function () {
+campoNome.addEventListener('input', function () {
     let nome = this.value
 
-    nome = nome.replace(/[^A-Za-zÀ-ÿ\s]/g, "")
+    nome = nome.replace(/[^A-Za-zÀ-ÿ\s]/g, '')
     nome = nome.toUpperCase()
 
-    nome = nome.split(" ").map(palavra => {
+    nome = nome.split(' ').map(palavra => {
         if (palavra.length > 0) {
             return palavra.charAt(0).toUpperCase() + palavra.slice(1)
         }
-        return ""
-    }).join(" ")
+        return ''
+    }).join(' ')
 
     this.value = nome
 })

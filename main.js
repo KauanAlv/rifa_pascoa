@@ -65,6 +65,8 @@ async function loadNumbers() {
 }
 
 function createNumbers() {
+
+    numbersContainer.innerHTML = ''
     for (let i = 1; i <= 150; i++) {
         setTimeout(() => {
             const div = document.createElement('div')

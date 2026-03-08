@@ -269,7 +269,9 @@ h1 {
 
 .number {
     padding: 12px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 8px;
     cursor: pointer;
     background: #f1f1f1;
@@ -331,6 +333,19 @@ h1 {
 
 .numbers::-webkit-scrollbar-track {
     background: #eee;
+}
+@keyframes shake {
+
+0%{transform:translateX(0)}
+25%{transform:translateX(-4px)}
+50%{transform:translateX(4px)}
+75%{transform:translateX(-4px)}
+100%{transform:translateX(0)}
+
+}
+
+.number.sold-click {
+animation: shake 0.3s;
 }
 
 .summary {

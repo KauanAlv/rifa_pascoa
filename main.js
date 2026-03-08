@@ -81,6 +81,8 @@ function iniciarContador() {
 
             document.getElementById("countdown").innerHTML =
                 "🎉 SORTEIO ENCERRADO!"
+
+            animacaoSorteio()
         }
 
     }, 1000)
@@ -208,12 +210,20 @@ function createNumbers() {
 
         div.addEventListener('click', () => {
 
+            if (soldNumbers.has(i)) {
+                div.classList.add("sold-click")
+                setTimeout(() => {
+                    div.classList.remove("sold-click")
+                }, 300)
+                showToast("Esse número já foi vendido.")
+                return
+            }
+
             div.style.transform = "scale(1.2)"
 
             setTimeout(() => {
                 div.style.transform = ""
             }, 120)
-            if (soldNumbers.has(i)) return
 
             if (selectedNumbers.includes(i)) {
 
@@ -295,7 +305,7 @@ buyBtn.addEventListener('click', async () => {
 
     const nomeInput = document.getElementById('name')
     const nomeSemNum = nomeInput.value.trim()
-    confete()
+
 
     if (selectedNumbers.length === 0)
         return showToast('Selecione pelo menos um número.')

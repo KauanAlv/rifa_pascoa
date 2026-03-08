@@ -7,16 +7,16 @@
     - Kauan Alves Pereira
     - Kayque Brenno Ferreira Almeida
     - Pyetro Ferreira de Souza
- * Versão: 2.0
-**********************************************************************************/
+ * Versão: 3.2
+***********************************************************************************/
 
 'use strict'
 
 const senha = prompt('Digite a senha do painel administrativo:')
 
-if (senha !== 'terceirao2026') {
+if (senha !== '3raorh26') {
     alert('Acesso negado.')
-    window.location.href =  '../index.html'
+    window.location.href = '../index.html'
 }
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'
@@ -88,6 +88,40 @@ function renderizarReservas(listaReservas) {
             horaFormatada = dataFirebase.toLocaleTimeString('pt-BR')
         }
 
+        let tempoRestanteHTML = ''
+
+        if (status === 'reservado' && data.expiresAt) {
+            const agora = Date.now()
+            const tempoRestante = data.expiresAt - agora
+
+            if (tempoRestante > 0) {
+                const minutos = Math.floor(tempoRestante / 60000)
+                const segundos = Math.floor((tempoRestante % 60000) / 1000)
+
+                let cor = 'green'
+
+                if (tempoRestante < 300000) {
+                    cor = 'red'
+                } else if (tempoRestante < 600000) {
+                    cor = 'orange'
+                }
+
+                tempoRestanteHTML = `
+                <div class="tempo" style="color:${cor}; font-weight:bold;">
+                ⏱️ Expira em: ${minutos}:${segundos.toString().padStart(2, '0')}
+                </div>
+                <br>
+                `
+            } else {
+                tempoRestanteHTML = `
+                <div class="tempo" style="color:red; font-weight:bold;">
+                ⏱️ EXPIRADO
+                </div>
+                <br>
+                `
+            }
+        }
+
         const div = document.createElement('div')
 
         div.style.border = '1px solid #ccc'
@@ -96,6 +130,7 @@ function renderizarReservas(listaReservas) {
         div.style.borderRadius = '8px'
 
         div.innerHTML = `
+${tempoRestanteHTML}
 <strong>NÚMERO:</strong> ${data.number}<br><br>
 <strong>NOME:</strong> ${data.name}<br><br>
 <strong>TURMA:</strong> ${data.turma.toUpperCase()}<br><br>
@@ -159,3 +194,8 @@ searchInput.addEventListener('input', () => {
 })
 
 escutarReservas()
+
+// Atualiza contador a cada segundo
+setInterval(() => {
+    renderizarReservas(reservas)
+}, 1000)

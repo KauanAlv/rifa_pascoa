@@ -16,7 +16,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 import {
     getFirestore,
     collection,
-    getDocs,
+    onSnapshot,
     doc,
     runTransaction,
     deleteDoc
@@ -44,29 +44,33 @@ const TEMPO_EXPIRACAO = 30 * 60 * 1000
 let soldNumbers = []
 let selectedNumbers = []
 
-async function loadNumbers() {
+function loadNumbers() {
 
-    soldNumbers = []
-    const querySnapshot = await getDocs(collection(db, 'rifa'))
-    const agora = Date.now()
+    onSnapshot(collection(db, 'rifa'), async (querySnapshot) => {
 
-    for (const docSnap of querySnapshot.docs) {
-        const data = docSnap.data()
+        soldNumbers = []
+        const agora = Date.now()
 
-        if (agora > data.expiresAt) {
-            await deleteDoc(doc(db, 'rifa', docSnap.id))
-        } else {
-            soldNumbers.push(data.number)
+        for (const docSnap of querySnapshot.docs) {
+            const data = docSnap.data()
+
+            if (agora > data.expiresAt) {
+                await deleteDoc(doc(db, 'rifa', docSnap.id))
+            } else {
+                soldNumbers.push(data.number)
+            }
         }
-    }
 
-    createNumbers()
-    updateCounter()
+        createNumbers()
+        updateCounter()
+    })
 }
 
 function createNumbers() {
 
-    numbersContainer.innerHTML = ''
+
+    selectedNumbers = []
+    updateSummary()
     for (let i = 1; i <= 150; i++) {
         setTimeout(() => {
             const div = document.createElement('div')
@@ -114,8 +118,12 @@ Total: <strong>R$ ${total}</strong>
 }
 
 function updateCounter() {
+
+    const vendidos = soldNumbers.length
+    const disponiveis = 150 - vendidos
+
     counter.innerText =
-        `Disponíveis: ${150 - soldNumbers.length} | Vendidos: ${soldNumbers.length}`
+        `Disponíveis: ${disponiveis} | Vendidos: ${vendidos}`
 }
 
 function showToast(msg, duration = 3000) {
@@ -138,8 +146,10 @@ function copiarPix() {
     const chave = document.getElementById('chavePix').innerText
 
     navigator.clipboard.writeText(chave)
+        .then(() => showToast('Chave Pix copiada!'))
+        .catch(() => showToast('Erro ao copiar chave Pix'))
 
-    showToast('Chave Pix copiada!')
+
 }
 
 window.copiarPix = copiarPix

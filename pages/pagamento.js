@@ -18,7 +18,7 @@ const nome = localStorage.getItem('nome') || ''
 const turma = localStorage.getItem('turma') || ''
 const createdAt = Number(localStorage.getItem('createdAt'))
 
-if (!createdAt) {
+if (!createdAt || numeros.length === 0) {
     window.location.href = "../index.html"
 }
 
@@ -35,10 +35,8 @@ Turma: ${turma}
 Total: R$ ${total}`
 
 document.getElementById('btnWhatsapp').onclick = function () {
-    window.open(
-        `https://wa.me/5511946168749?text=${encodeURIComponent(mensagem)}`,
-        '_blank'
-    )
+    const url = `https://wa.me/5511946168749?text=${encodeURIComponent(mensagem)}`
+    window.location.href = url
 }
 
 const timer = document.getElementById("timer")
@@ -86,7 +84,7 @@ function showToast(msg, duration = 3000) {
 
     let toast = document.createElement('div')
 
-    toast.className = 'toast'
+    toast.className = 'toast ${type}'
     toast.innerText = msg
 
     document.body.appendChild(toast)
@@ -101,11 +99,24 @@ function showToast(msg, duration = 3000) {
 
 function copiarPix() {
 
-    const chave = document.getElementById('chavePix').innerText
+    const chave = document.getElementById('pixKey').innerText
+    const botao = document.getElementById('btnPix')
 
     navigator.clipboard.writeText(chave)
+        .then(() => {
 
-    showToast('Chave Pix copiada!')
+            showToast('Chave Pix copiada!', 'success')
+
+            botao.innerText = 'Copiado ✓'
+
+            setTimeout(() => {
+                botao.innerText = 'Copiar'
+            }, 2000)
+
+        })
+        .catch(() => {
+            showToast('Erro ao copiar chave Pix', 'error')
+        })
 }
 
 window.copiarPix = copiarPix

@@ -67,10 +67,9 @@ function loadNumbers() {
 }
 
 function createNumbers() {
+    numbersContainer.innerHTML = ''
 
 
-    selectedNumbers = []
-    updateSummary()
     for (let i = 1; i <= 150; i++) {
         setTimeout(() => {
             const div = document.createElement('div')
@@ -80,6 +79,9 @@ function createNumbers() {
 
             if (soldNumbers.includes(i)) {
                 div.classList.add('sold')
+            }
+            if (selectedNumbers.includes(i)) {
+                div.classList.add('selected')
             }
 
             div.addEventListener('click', () => {
@@ -109,7 +111,7 @@ function updateSummary() {
         return
     }
 
-    const total = (selectedNumbers.length * 3.5).toFixed(2)
+    const total = (selectedNumbers.length * 4.0).toFixed(2)
 
     summary.innerHTML = `
 Números: <strong>${selectedNumbers.join(', ')}</strong><br>
@@ -143,7 +145,7 @@ function showToast(msg, duration = 3000) {
 }
 
 function copiarPix() {
-    const chave = document.getElementById('chavePix').innerText
+    const chave = document.getElementById('pixKey').innerText
 
     navigator.clipboard.writeText(chave)
         .then(() => showToast('Chave Pix copiada!'))

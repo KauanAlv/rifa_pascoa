@@ -1,16 +1,3 @@
-/***********************************************************************************
- * Objetivo: Arquivo responsável por controlar a parte visual de pagamento do site,
-   onde os usuários podem visualizar os números selecionados, seus dados e finalizar
-   a compra.
- * Data: 05/03/2026 (quinta-feira)
- * Autores:
-    - Gustavo Vidal de Abreu
-    - Kauan Alves Pereira
-    - Kayque Brenno Ferreira Almeida
-    - Pyetro Ferreira de Souza
- * Versão: 2.0
-***********************************************************************************/
-
 'use strict'
 
 const numeros = JSON.parse(localStorage.getItem('numeros')) || []
@@ -22,7 +9,7 @@ if (!createdAt || numeros.length === 0) {
     window.location.href = "../index.html"
 }
 
-const total = (numeros.length * 3.5).toFixed(2)
+const total = (numeros.length * 4.0).toFixed(2)
 
 document.getElementById('numConfirmado').innerText = numeros.join(', ')
 document.getElementById('nomeConfirmado').innerText = nome
@@ -77,14 +64,13 @@ function atualizarTempo() {
 }
 
 intervalo = setInterval(atualizarTempo, 1000)
-
 atualizarTempo()
 
-function showToast(msg, duration = 3000) {
+function showToast(msg, type = 'success', duration = 3000) {
 
     let toast = document.createElement('div')
 
-    toast.className = 'toast ${type}'
+    toast.className = `toast ${type}`
     toast.innerText = msg
 
     document.body.appendChild(toast)

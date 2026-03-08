@@ -43,6 +43,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 15px;
+<<<<<<< HEAD
     position: relative;
     margin-top: 50px;
 }
@@ -75,6 +76,8 @@ main {
 .titulo-rgb {
     display: flex;
     flex-direction: column;
+=======
+>>>>>>> 99df67cdde205e955914f8a346334bac0db43350
 }
 
 h1 {
@@ -361,7 +364,9 @@ button:disabled {
 }
 
 .instas {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     color: #856404;
     background: #fff3cd;
     border: 1px solid #ffeeba;
@@ -374,13 +379,6 @@ button:disabled {
 .instas a {
     color: rgb(247, 103, 103);
     font-weight: bold;
-}
-
-.instas .sala {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
 }
 
 .lista-devs {
@@ -497,12 +495,6 @@ button:disabled {
     .container {
         width: 100%;
         padding: 20px;
-    }
-
-    .container::before {
-        content: "🐰 🍫 🐰 🍫 🐰 🍫 🐰 🍫 🐰 🍫";
-        font-size: 20px;
-        top: -18px;
     }
 
     .pix-box {

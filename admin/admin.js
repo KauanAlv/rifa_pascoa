@@ -2,7 +2,7 @@
  * Objetivo: Arquivo responsável por controlar a parte administrativa do site, onde
    é possível visualizar as reservas, confirmar pagamentos e cancelar reservas.
  * Data: 05/03/2026 (quinta-feira)
- * Autor(es):
+ * Autores:
     - Gustavo Vidal de Abreu
     - Kauan Alves Pereira
     - Kayque Brenno Ferreira Almeida
@@ -11,6 +11,13 @@
 **********************************************************************************/
 
 'use strict'
+
+const senha = prompt('Digite a senha do painel administrativo:')
+
+if (senha !== 'terceirao2026') {
+    alert('Acesso negado.')
+    window.location.href =  '../index.html'
+}
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'
 import {

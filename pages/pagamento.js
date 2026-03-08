@@ -3,7 +3,7 @@
    onde os usuários podem visualizar os números selecionados, seus dados e finalizar
    a compra.
  * Data: 05/03/2026 (quinta-feira)
- * Autor(es):
+ * Autores:
     - Gustavo Vidal de Abreu
     - Kauan Alves Pereira
     - Kayque Brenno Ferreira Almeida
@@ -16,6 +16,11 @@
 const numeros = JSON.parse(localStorage.getItem('numeros')) || []
 const nome = localStorage.getItem('nome') || ''
 const turma = localStorage.getItem('turma') || ''
+const createdAt = Number(localStorage.getItem('createdAt'))
+
+if (!createdAt) {
+    window.location.href = "../index.html"
+}
 
 const total = (numeros.length * 3.5).toFixed(2)
 
@@ -36,7 +41,49 @@ document.getElementById('btnWhatsapp').onclick = function () {
     )
 }
 
+const timer = document.getElementById("timer")
+
+const TEMPO_EXPIRACAO = 30 * 60 * 1000
+const expiresAt = createdAt + TEMPO_EXPIRACAO
+
+let intervalo
+
+function atualizarTempo() {
+
+    const agora = Date.now()
+    const restante = expiresAt - agora
+
+    if (restante <= 0) {
+
+        clearInterval(intervalo)
+
+        timer.innerText = "Reserva expirada"
+
+        localStorage.removeItem('numeros')
+        localStorage.removeItem('nome')
+        localStorage.removeItem('turma')
+        localStorage.removeItem('createdAt')
+
+        setTimeout(() => {
+            window.location.href = "../index.html"
+        }, 3000)
+
+        return
+    }
+
+    const minutos = Math.floor(restante / 60000)
+    const segundos = Math.floor((restante % 60000) / 1000)
+
+    timer.innerText =
+        `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`
+}
+
+intervalo = setInterval(atualizarTempo, 1000)
+
+atualizarTempo()
+
 function showToast(msg, duration = 3000) {
+
     let toast = document.createElement('div')
 
     toast.className = 'toast'
@@ -53,8 +100,11 @@ function showToast(msg, duration = 3000) {
 }
 
 function copiarPix() {
-    const chave = document.getElementById('pixKey').innerText
+
+    const chave = document.getElementById('chavePix').innerText
+
     navigator.clipboard.writeText(chave)
+
     showToast('Chave Pix copiada!')
 }
 

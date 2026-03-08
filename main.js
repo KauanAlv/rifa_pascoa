@@ -2,7 +2,7 @@
  * Objetivo: Arquivo responsável por controlar a parte principal do site, onde os usuários
    podem selecionar os números.
  * Data: 04/03/2026 (quarta-feira)
- * Autor(es):
+ * Autores:
     - Gustavo Vidal de Abreu
     - Kauan Alves Pereira
     - Kayque Brenno Ferreira Almeida
@@ -18,7 +18,8 @@ import {
     collection,
     getDocs,
     doc,
-    runTransaction
+    runTransaction,
+    deleteDoc
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js'
 
 const firebaseConfig = {
@@ -37,19 +38,25 @@ const numbersContainer = document.getElementById('numbers')
 const counter = document.getElementById('counter')
 const summary = document.getElementById('summary')
 const buyBtn = document.getElementById('buyBtn')
-const agora = new Date()
-const date = agora.toLocaleDateString('pt-BR')
-const hora = agora.toLocaleTimeString('pt-BR')
+
+const TEMPO_EXPIRACAO = 30 * 60 * 1000
 
 let soldNumbers = []
 let selectedNumbers = []
 
 async function loadNumbers() {
     const querySnapshot = await getDocs(collection(db, 'rifa'))
+    const agora = Date.now()
 
-    querySnapshot.forEach(doc => {
-        soldNumbers.push(doc.data().number)
-    })
+    for (const docSnap of querySnapshot.docs) {
+        const data = docSnap.data()
+
+        if (agora > data.expiresAt) {
+            await deleteDoc(doc(db, 'rifa', docSnap.id))
+        } else {
+            soldNumbers.push(data.number)
+        }
+    }
 
     createNumbers()
     updateCounter()
@@ -57,9 +64,7 @@ async function loadNumbers() {
 
 function createNumbers() {
     for (let i = 1; i <= 150; i++) {
-
         setTimeout(() => {
-
             const div = document.createElement('div')
 
             div.classList.add('number')
@@ -74,9 +79,11 @@ function createNumbers() {
 
                 if (selectedNumbers.includes(i)) {
                     selectedNumbers = selectedNumbers.filter(n => n !== i)
+
                     div.classList.remove('selected')
                 } else {
                     selectedNumbers.push(i)
+
                     div.classList.add('selected')
                 }
 
@@ -84,7 +91,6 @@ function createNumbers() {
             })
 
             numbersContainer.appendChild(div)
-
         }, i * 10)
     }
 }
@@ -101,11 +107,11 @@ function updateSummary() {
 Números: <strong>${selectedNumbers.join(', ')}</strong><br>
 Total: <strong>R$ ${total}</strong>
 `
-
 }
 
 function updateCounter() {
-    counter.innerText = `Disponíveis: ${150 - soldNumbers.length} | Vendidos: ${soldNumbers.length}`
+    counter.innerText =
+        `Disponíveis: ${150 - soldNumbers.length} | Vendidos: ${soldNumbers.length}`
 }
 
 function showToast(msg, duration = 3000) {
@@ -125,50 +131,33 @@ function showToast(msg, duration = 3000) {
 }
 
 function copiarPix() {
-    const chave = document.getElementById('pixKey').innerText
+    const chave = document.getElementById('chavePix').innerText
 
     navigator.clipboard.writeText(chave)
 
     showToast('Chave Pix copiada!')
 }
-function chuvaDePascoa() {
-
-    for (let i = 0; i < 40; i++) {
-
-        const egg = document.createElement("div")
-        egg.className = "egg"
-
-        const ovos = ["🥚", "🐰", "🍫", "🥕"]
-        egg.innerText = ovos[Math.floor(Math.random() * ovos.length)]
-
-        egg.style.left = Math.random() * 100 + "vw"
-        egg.style.animationDuration = (Math.random() * 3 + 2) + "s"
-
-        document.body.appendChild(egg)
-
-        setTimeout(() => {
-            egg.remove()
-        }, 5000)
-    }
-
-}
-
 
 window.copiarPix = copiarPix
 
 buyBtn.addEventListener('click', async () => {
     const name = document.getElementById('name').value.trim()
     const turma = document.getElementById('turma').value.trim()
+
     const nomeInput = document.getElementById('name')
     const nomeSemNum = nomeInput.value.trim()
 
-    if (selectedNumbers.length === 0) return showToast('Selecione pelo menos um número.')
+    if (selectedNumbers.length === 0)
+        return showToast('Selecione pelo menos um número.')
+
     if (!/^[A-Za-zÀ-ÿ\s]+$/.test(nomeSemNum)) {
         nomeInput.value = ''
         nomeInput.focus()
         return showToast('Digite seu nome.')
     }
+
     if (!name) return showToast('Digite seu nome.')
+
     if (!turma) return showToast('Escolha sua turma e turno.')
 
     buyBtn.disabled = true
@@ -181,7 +170,13 @@ buyBtn.addEventListener('click', async () => {
                 const snap = await transaction.get(ref)
 
                 if (snap.exists()) {
-                    throw new Error('Número já reservado')
+                    const data = snap.data()
+
+                    if (Date.now() < data.expiresAt) {
+                        throw new Error('Número já reservado')
+                    }
+
+                    transaction.delete(ref)
                 }
 
                 transaction.set(ref, {
@@ -189,26 +184,21 @@ buyBtn.addEventListener('click', async () => {
                     turma,
                     number,
                     status: 'reservado',
-                    createdAt: Date.now()
+                    createdAt: Date.now(),
+                    expiresAt: Date.now() + TEMPO_EXPIRACAO
                 })
-
             })
         }
 
         localStorage.setItem('numeros', JSON.stringify(selectedNumbers))
         localStorage.setItem('nome', name)
         localStorage.setItem('turma', turma)
+        localStorage.setItem('createdAt', Date.now())
 
-
-        chuvaDePascoa()
-
-
-        setTimeout(() => {
-            window.location.href = "./pages/pagamento.html"
-        }, 2000)
-
+        window.location.href = './pages/pagamento.html'
     } catch (e) {
         showToast('Um dos números já foi reservado por outra pessoa.')
+
         buyBtn.disabled = false
     }
 })
@@ -225,6 +215,7 @@ campoNome.addEventListener('input', function () {
         if (palavra.length > 0) {
             return palavra.charAt(0).toUpperCase() + palavra.slice(1)
         }
+
         return ''
     }).join(' ')
 

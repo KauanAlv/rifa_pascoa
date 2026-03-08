@@ -9,7 +9,7 @@ if (!createdAt || numeros.length === 0) {
     window.location.href = "../index.html"
 }
 
-const total = (numeros.length * 4.0).toFixed(2)
+const total = (numeros.length * 3.5).toFixed(2)
 
 document.getElementById('numConfirmado').innerText = numeros.join(', ')
 document.getElementById('nomeConfirmado').innerText = nome

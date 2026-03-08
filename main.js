@@ -41,8 +41,9 @@ const buyBtn = document.getElementById('buyBtn')
 
 const TEMPO_EXPIRACAO = 30 * 60 * 1000
 
-let soldNumbers = []
+let soldNumbers = new Set()
 let selectedNumbers = []
+let comprando = false
 
 function atualizarBarra(vendidos, total) {
 
@@ -57,8 +58,9 @@ function atualizarBarra(vendidos, total) {
 function loadNumbers() {
 
     onSnapshot(collection(db, 'rifa'), async (querySnapshot) => {
+        if (comprando) return
 
-        soldNumbers = []
+        soldNumbers = new Set()
         const agora = Date.now()
 
         for (const docSnap of querySnapshot.docs) {
@@ -67,7 +69,7 @@ function loadNumbers() {
             if (agora > data.expiresAt) {
                 await deleteDoc(doc(db, 'rifa', docSnap.id))
             } else {
-                soldNumbers.push(data.number)
+                soldNumbers.add(data.number)
             }
         }
 
@@ -88,7 +90,7 @@ function createNumbers() {
         div.classList.add('number')
         div.innerText = i
 
-        if (soldNumbers.includes(i)) {
+        if (soldNumbers.has(i)) {
             div.classList.add('sold')
         }
 
@@ -98,7 +100,7 @@ function createNumbers() {
 
         div.addEventListener('click', () => {
 
-            if (soldNumbers.includes(i)) return
+            if (soldNumbers.has(i)) return
 
             if (selectedNumbers.includes(i)) {
 
@@ -127,7 +129,7 @@ function updateSummary() {
         return
     }
 
-    const total = (selectedNumbers.length * 4.0).toFixed(2)
+    const total = (selectedNumbers.length * 3.5).toFixed(2)
 
     summary.innerHTML = `
 Números: <strong>${selectedNumbers.join(', ')}</strong><br>
@@ -137,7 +139,7 @@ Total: <strong>R$ ${total}</strong>
 
 function updateCounter() {
 
-    const vendidos = soldNumbers.length
+    const vendidos = soldNumbers.size
     const disponiveis = 150 - vendidos
 
     counter.innerText =
@@ -228,7 +230,7 @@ buyBtn.addEventListener('click', async () => {
         localStorage.setItem('nome', name)
         localStorage.setItem('turma', turma)
         localStorage.setItem('createdAt', Date.now())
-
+        comprando = true
         window.location.href = './pages/pagamento.html'
     } catch (e) {
         showToast('Um dos números já foi reservado por outra pessoa.')

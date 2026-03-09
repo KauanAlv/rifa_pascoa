@@ -1,13 +1,10 @@
-/* Fundo da página */
 body {
     margin: 0;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* muda aqui */
     padding: 20px 10px;
-    /* espaço nas laterais */
     background: linear-gradient(135deg, #c00000, #000000);
 }
 
@@ -31,7 +28,6 @@ body {
     outline: none;
 }
 
-/* Container principal */
 .container {
     background: #ffffff;
     width: 100%;
@@ -44,20 +40,17 @@ body {
     gap: 20px;
 }
 
-/* Título principal */
 h1 {
     text-align: center;
     margin: 0;
     color: #c00000;
 }
 
-/* Subtítulo */
 h2 {
     margin-bottom: 10px;
     color: #333;
 }
 
-/* Estatísticas */
 #stats {
     background: #f5f5f5;
     padding: 15px;
@@ -82,14 +75,12 @@ h2 {
     margin-top: 0;
 }
 
-/* Botões */
 button {
     padding: 8px 14px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    margin-right: 8px;
     transition: 0.2s;
     width: 100%;
     margin-bottom: 5px;
@@ -101,17 +92,25 @@ button:hover {
 
 button:first-of-type {
     background: #28a745;
-    /* confirmar */
     color: white;
 }
 
 button:last-of-type {
     background: #dc3545;
-    /* cancelar */
     color: white;
 }
 
-/* Responsivo */
+@media (max-width: 1024px) {
+    .colunas {
+        grid-template-columns: 1fr;
+    }
+
+    button {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
 @media (max-width: 600px) {
     body {
         align-items: flex-start;

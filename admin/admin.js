@@ -1,14 +1,13 @@
-/**********************************************************************************
- * Objetivo: Arquivo responsável por controlar a parte administrativa do site, onde
-   é possível visualizar as reservas, confirmar pagamentos e cancelar reservas.
+/***************************************************************************
+ * Objetivo: Arquivo responsável por toda a lógica do painel administrativo.
  * Data: 05/03/2026 (quinta-feira)
  * Autores:
     - Gustavo Vidal de Abreu
     - Kauan Alves Pereira
     - Kayque Brenno Ferreira Almeida
     - Pyetro Ferreira de Souza
- * Versão: 3.2
-***********************************************************************************/
+ * Versão: 3.6
+****************************************************************************/
 
 'use strict'
 
@@ -49,17 +48,47 @@ const searchInput = document.getElementById('searchInput')
 let reservas = []
 let termoBusca = ''
 
+// HORÁRIO DE FUNCIONAMENTO SISTEMA
+function ajustarExpiracao(expiresAt) {
+    const agora = new Date()
+    const expiracao = new Date(expiresAt)
+
+    const inicio = new Date()
+    inicio.setHours(7, 30, 0, 0)
+
+    const fim = new Date()
+    fim.setHours(22, 0, 0, 0)
+
+    if (expiracao > fim) {
+        const diferenca = expiracao - fim
+
+        const novoHorario = new Date(inicio)
+        novoHorario.setDate(novoHorario.getDate() + 1)
+
+        return novoHorario.getTime() + diferenca
+    }
+
+    if (agora < inicio) {
+        const diferenca = expiracao - agora
+
+        const novoHorario = new Date(inicio)
+
+        return novoHorario.getTime() + diferenca
+    }
+
+    return expiresAt
+}
+
+// ESCUTAR RESERVAS FIREBASE
 function escutarReservas() {
     onSnapshot(collection(db, 'rifa'), (snapshot) => {
         reservas = []
 
         snapshot.forEach((docSnap) => {
-
             reservas.push({
                 id: docSnap.id,
                 ...docSnap.data()
             })
-
         })
 
         reservas.sort((a, b) => a.number - b.number)
@@ -68,9 +97,11 @@ function escutarReservas() {
     })
 }
 
+// RENDERIZAR RESERVAS //
 function renderizarReservas(listaReservas) {
     listaReservados.innerHTML = ''
     listaVendidos.innerHTML = ''
+
     let vendidos = 0
     let reservados = 0
 
@@ -94,7 +125,10 @@ function renderizarReservas(listaReservas) {
 
         if (status === 'reservado' && data.expiresAt) {
             const agora = Date.now()
-            const tempoRestante = data.expiresAt - agora
+
+            const tempoCorrigido = ajustarExpiracao(data.expiresAt)
+
+            const tempoRestante = tempoCorrigido - agora
 
             if (tempoRestante > 0) {
                 const minutos = Math.floor(tempoRestante / 60000)
@@ -170,12 +204,12 @@ function renderizarReservas(listaReservas) {
     `
 }
 
+// CONFIRMAR PAGAMENTO
 window.confirmar = async function (id) {
     try {
         await updateDoc(doc(db, 'rifa', id), {
             status: 'VENDIDO'
         })
-
         alert('Pagamento confirmado!')
     } catch (error) {
         console.error(error)
@@ -183,6 +217,7 @@ window.confirmar = async function (id) {
     }
 }
 
+// CANCELAR RESERVA
 window.cancelar = async function (id) {
     const confirmar = confirm('Tem certeza que deseja cancelar esta reserva?')
 
@@ -190,7 +225,6 @@ window.cancelar = async function (id) {
 
     try {
         await deleteDoc(doc(db, 'rifa', id))
-
         alert('Reserva cancelada!')
     } catch (error) {
         console.error(error)
@@ -198,6 +232,7 @@ window.cancelar = async function (id) {
     }
 }
 
+// BUSCA
 searchInput.addEventListener('input', () => {
     termoBusca = searchInput.value.toUpperCase()
 
@@ -209,9 +244,10 @@ searchInput.addEventListener('input', () => {
     renderizarReservas(filtrados)
 })
 
+// INICIAR SISTEMA
 escutarReservas()
 
-// Atualiza contador a cada segundo
+// TIMER GLOBAL
 setInterval(() => {
     const filtrados = reservas.filter((r) =>
         (r.name || '').toUpperCase().includes(termoBusca) ||

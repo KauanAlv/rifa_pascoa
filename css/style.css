@@ -508,16 +508,9 @@ button:disabled {
     transition: 0.3s;
 }
 
-#chavePix:hover {
+#pixKey:hover {
     color: #0a58ca;
     text-decoration: underline;
-}
-
-#tela-pagamento {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    padding: 20px;
 }
 
 .egg {

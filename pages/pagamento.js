@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Objetivo: Arquivo responsável por toda a lógica do site de pagamento da rifa.
+ * Data: 04/03/2026 (quarta-feira)
+ * Autores:
+    - Gustavo Vidal de Abreu
+    - Kauan Alves Pereira
+    - Kayque Brenno Ferreira Almeida
+    - Pyetro Ferreira de Souza
+ * Versão: 3.0
+********************************************************************************/
+
 'use strict'
 
 const numeros = JSON.parse(localStorage.getItem('numeros')) || []
@@ -34,7 +45,6 @@ const expiresAt = createdAt + TEMPO_EXPIRACAO
 let intervalo
 
 function atualizarTempo() {
-
     const agora = Date.now()
     const restante = expiresAt - agora
 
@@ -67,7 +77,6 @@ intervalo = setInterval(atualizarTempo, 1000)
 atualizarTempo()
 
 function showToast(msg, type = 'success', duration = 3000) {
-
     let toast = document.createElement('div')
 
     toast.className = `toast ${type}`

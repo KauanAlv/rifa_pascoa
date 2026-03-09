@@ -1,14 +1,13 @@
-/*****************************************************************************************
- * Objetivo: Arquivo responsável por controlar a parte principal do site, onde os usuários
-   podem selecionar os números.
+/***************************************************************************
+ * Objetivo: Arquivo responsável por toda a lógica do site de venda da rifa.
  * Data: 04/03/2026 (quarta-feira)
  * Autores:
     - Gustavo Vidal de Abreu
     - Kauan Alves Pereira
     - Kayque Brenno Ferreira Almeida
     - Pyetro Ferreira de Souza
- * Versão: 2.4
-*****************************************************************************************/
+ * Versão: 2.7
+***************************************************************************/
 
 'use strict'
 
@@ -47,7 +46,6 @@ let comprando = false
 let reservedNumbers = new Set()
 
 function atualizarBarra(ocupados, total) {
-
     const porcentagem = Math.round((ocupados / total) * 100);
 
     document.getElementById("progresso").style.width = porcentagem + "%";
@@ -56,8 +54,8 @@ function atualizarBarra(ocupados, total) {
         porcentagem + "% Vendidos";
 
 }
-function iniciarContador() {
 
+function iniciarContador() {
     const dataSorteio = new Date("April 3, 2026 0:00:00").getTime()
 
     const intervalo = setInterval(() => {
@@ -77,7 +75,6 @@ function iniciarContador() {
         document.getElementById("seconds").innerText = segundos
 
         if (distancia < 0) {
-
             clearInterval(intervalo)
 
             document.getElementById("countdown").innerHTML =
@@ -85,15 +82,13 @@ function iniciarContador() {
 
             animacaoSorteio()
         }
-
     }, 1000)
 }
 
 iniciarContador()
+
 function confete() {
-
     for (let i = 0; i < 120; i++) {
-
         const confete = document.createElement("div")
         confete.classList.add("confete")
 
@@ -123,8 +118,8 @@ function confete() {
         }, 6000)
     }
 }
-function animacaoSorteio() {
 
+function animacaoSorteio() {
     const numeros = document.querySelectorAll(".number")
 
     let velocidade = 50
@@ -132,7 +127,6 @@ function animacaoSorteio() {
     let atual = 0
 
     const intervalo = setInterval(() => {
-
         numeros.forEach(n => {
             n.style.background = ""
             n.style.color = ""
@@ -150,7 +144,6 @@ function animacaoSorteio() {
         rodadas--
 
         if (rodadas <= 0) {
-
             clearInterval(intervalo)
 
             const vencedor =
@@ -160,14 +153,11 @@ function animacaoSorteio() {
             numeros[vencedor].style.color = "#fff"
 
             confete()
-
         }
-
     }, velocidade)
-
 }
-function loadNumbers() {
 
+function loadNumbers() {
     onSnapshot(collection(db, 'rifa'), async (querySnapshot) => {
         if (comprando) return
 
@@ -197,14 +187,13 @@ function loadNumbers() {
         updateCounter()
     })
 }
-function createNumbers() {
 
+function createNumbers() {
     numbersContainer.innerHTML = ''
 
     const fragment = document.createDocumentFragment()
 
     for (let i = 1; i <= 150; i++) {
-
         const div = document.createElement('div')
 
         div.classList.add('number')
@@ -214,6 +203,7 @@ function createNumbers() {
         if (reservedNumbers.has(i)) {
             div.classList.add('reserved')
         }
+
         if (soldNumbers.has(i)) {
             div.classList.add('sold')
         }
@@ -223,7 +213,6 @@ function createNumbers() {
         }
 
         div.addEventListener('click', () => {
-
             if (soldNumbers.has(i)) {
                 div.classList.add("sold-click")
                 setTimeout(() => {
@@ -232,6 +221,7 @@ function createNumbers() {
                 showToast("Esse número já foi vendido.")
                 return
             }
+
             if (reservedNumbers.has(i)) {
                 div.classList.add("sold-click")
 
@@ -250,15 +240,11 @@ function createNumbers() {
             }, 120)
 
             if (selectedNumbers.includes(i)) {
-
                 selectedNumbers = selectedNumbers.filter(n => n !== i)
                 div.classList.remove('selected')
-
             } else {
-
                 selectedNumbers.push(i)
                 div.classList.add('selected')
-
             }
 
             updateSummary()
@@ -279,13 +265,12 @@ function updateSummary() {
     const total = (selectedNumbers.length * 3.5).toFixed(2)
 
     summary.innerHTML = `
-Números: <strong>${selectedNumbers.join(', ')}</strong><br>
-Total: <strong>R$ ${total}</strong>
-`
+    Números: <strong>${selectedNumbers.join(', ')}</strong><br>
+    Total: <strong>R$ ${total}</strong>
+    `
 }
 
 function updateCounter() {
-
     const ocupados = soldNumbers.size + reservedNumbers.size
     const disponiveis = 150 - ocupados
 
@@ -317,8 +302,6 @@ function copiarPix() {
     navigator.clipboard.writeText(chave)
         .then(() => showToast('Chave Pix copiada!'))
         .catch(() => showToast('Erro ao copiar chave Pix'))
-
-
 }
 
 window.copiarPix = copiarPix
@@ -331,8 +314,7 @@ buyBtn.addEventListener('click', async () => {
     const nomeSemNum = nomeInput.value.trim()
 
 
-    if (selectedNumbers.length === 0)
-        return showToast('Selecione pelo menos um número.')
+    if (selectedNumbers.length === 0) return showToast('Selecione pelo menos um número.')
 
     if (!/^[A-Za-zÀ-ÿ\s]+$/.test(nomeSemNum)) {
         nomeInput.value = ''
@@ -394,8 +376,6 @@ buyBtn.addEventListener('click', async () => {
         buyBtn.disabled = false
     }
 })
-
-
 
 const campoNome = document.getElementById('name')
 

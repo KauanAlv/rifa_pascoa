@@ -41,7 +41,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
-const lista = document.getElementById('listaReservas')
+const listaReservados = document.getElementById('listaReservados')
+const listaVendidos = document.getElementById('listaVendidos')
 const stats = document.getElementById('stats')
 const searchInput = document.getElementById('searchInput')
 
@@ -67,8 +68,8 @@ function escutarReservas() {
 }
 
 function renderizarReservas(listaReservas) {
-    lista.innerHTML = ''
-
+    listaReservados.innerHTML = ''
+    listaVendidos.innerHTML = ''
     let vendidos = 0
     let reservados = 0
 
@@ -129,29 +130,43 @@ function renderizarReservas(listaReservas) {
         div.style.marginBottom = '20px'
         div.style.borderRadius = '8px'
 
-        div.innerHTML = `
-${tempoRestanteHTML}
-<strong>NÚMERO:</strong> ${data.number}<br><br>
-<strong>NOME:</strong> ${data.name}<br><br>
-<strong>TURMA:</strong> ${data.turma.toUpperCase()}<br><br>
-<strong>STATUS:</strong> ${data.status.toUpperCase()}<br><br>
-<strong>DATA:</strong> ${dataFormatada}<br><br>
-<strong>HORA:</strong> ${horaFormatada}
-<br><br>
-<button onclick="confirmar('${data.id}')">Confirmar pagamento</button>
-<button onclick="cancelar('${data.id}')">Cancelar</button>
-`
+        let botoes = `
+        <button onclick="cancelar('${data.id}')">Cancelar</button>
+        `
 
-        lista.appendChild(div)
+        if (status === 'reservado') {
+            botoes = `
+            <button onclick="confirmar('${data.id}')">Confirmar pagamento</button>
+            <button onclick="cancelar('${data.id}')">Cancelar</button>
+            `
+        }
+
+        div.innerHTML = `
+        ${tempoRestanteHTML}
+        <strong>NÚMERO:</strong> ${data.number}<br><br>
+        <strong>NOME:</strong> ${data.name}<br><br>
+        <strong>TURMA:</strong> ${data.turma.toUpperCase()}<br><br>
+        <strong>STATUS:</strong> ${data.status.toUpperCase()}<br><br>
+        <strong>DATA:</strong> ${dataFormatada}<br><br>
+        <strong>HORA:</strong> ${horaFormatada}
+        <br><br>
+        ${botoes}
+        `
+
+        if (status === 'vendido') {
+            listaVendidos.appendChild(div)
+        } else if (status === 'reservado') {
+            listaReservados.appendChild(div)
+        }
     })
 
     const disponiveis = 150 - vendidos - reservados
 
     stats.innerHTML = `
-<p>Vendidos: <strong>${vendidos}</strong></p>
-<p>Reservados: <strong>${reservados}</strong></p>
-<p>Disponíveis: <strong>${disponiveis}</strong></p>
-`
+    <p>Vendidos: <strong>${vendidos}</strong></p>
+    <p>Reservados: <strong>${reservados}</strong></p>
+    <p>Disponíveis: <strong>${disponiveis}</strong></p>
+    `
 }
 
 window.confirmar = async function (id) {

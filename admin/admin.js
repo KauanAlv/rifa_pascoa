@@ -47,6 +47,7 @@ const stats = document.getElementById('stats')
 const searchInput = document.getElementById('searchInput')
 
 let reservas = []
+let termoBusca = ''
 
 function escutarReservas() {
     onSnapshot(collection(db, 'rifa'), (snapshot) => {
@@ -198,11 +199,11 @@ window.cancelar = async function (id) {
 }
 
 searchInput.addEventListener('input', () => {
-    const termo = searchInput.value.toUpperCase()
+    termoBusca = searchInput.value.toUpperCase()
 
     const filtrados = reservas.filter((r) =>
-        r.name.toUpperCase().includes(termo) ||
-        String(r.number).includes(termo)
+        (r.name || '').toUpperCase().includes(termoBusca) ||
+        String(r.number || '').includes(termoBusca)
     )
 
     renderizarReservas(filtrados)
@@ -212,5 +213,10 @@ escutarReservas()
 
 // Atualiza contador a cada segundo
 setInterval(() => {
-    renderizarReservas(reservas)
+    const filtrados = reservas.filter((r) =>
+        (r.name || '').toUpperCase().includes(termoBusca) ||
+        String(r.number || '').includes(termoBusca)
+    )
+
+    renderizarReservas(filtrados)
 }, 1000)

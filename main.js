@@ -6,7 +6,7 @@
     - Kauan Alves Pereira
     - Kayque Brenno Ferreira Almeida
     - Pyetro Ferreira de Souza
- * Versão: 2.7
+ * Versão: 2.8
 ***************************************************************************/
 
 'use strict'
@@ -40,6 +40,20 @@ const numbersContainer = document.getElementById('numbers')
 const counter = document.getElementById('counter')
 const summary = document.getElementById('summary')
 const buyBtn = document.getElementById('buyBtn')
+
+// CAMPO NOME
+const campoNome = document.getElementById('name')
+
+// FORÇAR NOME EM MAIÚSCULO
+campoNome.addEventListener('input', function () {
+
+    let nome = this.value
+
+    nome = nome.replace(/[^A-Za-zÀ-ÿ\s]/g, '')
+    nome = nome.toUpperCase()
+
+    this.value = nome
+})
 
 // CONFIG
 const TEMPO_EXPIRACAO = 30 * 60 * 1000
@@ -109,14 +123,12 @@ function loadNumbers() {
             const data = docSnap.data()
             const status = (data.status || "").toLowerCase()
 
-            // apagar reservas expiradas
-            if (data.expiresAt && agora > data.expiresAt && status === STATUS.RESERVADO) {
-
-                await deleteDoc(doc(db, 'rifa', docSnap.id))
-                continue
-            }
-
             if (status === STATUS.RESERVADO) {
+
+                if (data.expiresAt && agora > data.expiresAt) {
+                    continue
+                }
+
                 reservedNumbers.add(Number(data.number))
             }
 

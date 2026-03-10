@@ -44,6 +44,10 @@ const buyBtn = document.getElementById('buyBtn')
 
 // Variáveis globais
 const TEMPO_EXPIRACAO = 30 * 60 * 1000
+const STATUS = {
+    RESERVADO: "reservado",
+    VENDIDO: "vendido"
+}
 
 // Variáveis para controle de números
 let soldNumbers = new Set()
@@ -214,15 +218,15 @@ function loadNumbers() {
         for (const docSnap of querySnapshot.docs) {
             const data = docSnap.data()
 
-            if (agora > data.expiresAt && data.status === "reservado") {
+            if (agora > data.expiresAt && data.status === STATUS.RESERVADO) {
                 await deleteDoc(doc(db, 'rifa', docSnap.id))
                 continue
             } else {
-                if (data.status === "reservado") {
+                if (data.status === STATUS.RESERVADO) {
                     reservedNumbers.add(Number(data.number))
                 }
 
-                if (data.status === "VENDIDO") {
+                if (data.status === STATUS.VENDIDO) {
                     soldNumbers.add(Number(data.number))
                 }
             }
@@ -381,11 +385,11 @@ buyBtn.addEventListener('click', async () => {
                 if (snap.exists()) {
                     const data = snap.data()
 
-                    if (data.status === "VENDIDO") {
+                    if (data.status === STATUS.VENDIDO) {
                         throw new Error("Número já vendido")
                     }
 
-                    if (data.status === "reservado" && Date.now() < data.expiresAt) {
+                    if (data.status === STATUS.RESERVADO && Date.now() < data.expiresAt) {
                         throw new Error("Número já reservado")
                     }
 
@@ -396,7 +400,7 @@ buyBtn.addEventListener('click', async () => {
                     name,
                     turma,
                     number,
-                    status: 'reservado',
+                    status: STATUS.RESERVADO,
                     createdAt: Date.now(),
                     expiresAt: calcularExpiracao()
                 })

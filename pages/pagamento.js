@@ -14,7 +14,7 @@
 const numeros = JSON.parse(localStorage.getItem('numeros')) || []
 const nome = localStorage.getItem('nome') || ''
 const turma = localStorage.getItem('turma') || ''
-const createdAt = Number(localStorage.getItem('createdAt'))
+const createdAt = Number(localStorage.getItem('createdAt') || 0)
 
 if (!createdAt || numeros.length === 0) {
     window.location.href = "../index.html"

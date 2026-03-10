@@ -67,11 +67,10 @@ async function loginAdmin() {
 
 // VERIFICAR AUTENTICAÇÃO
 onAuthStateChanged(auth, (user) => {
-    if (!user) {
+    if (!user)
         loginAdmin()
-    } else {
+    else
         escutarReservas()
-    }
 })
 
 // ESCUTAR RESERVAS FIREBASE
@@ -160,18 +159,18 @@ function renderizarReservas(listaReservas) {
                     }
 
                     tempoRestanteHTML = `
-                <div class="tempo" style="color:${cor}; font-weight:bold;">
-                ⏱️ Expira em: ${minutos}:${segundos.toString().padStart(2, '0')}
-                </div>
-                <br>
-                `
+                    <div class="tempo" style="color:${cor}; font-weight:bold;">
+                    ⏱️ Expira em: ${minutos}:${segundos.toString().padStart(2, '0')}
+                    </div>
+                    <br>
+                    `
                 } else {
                     tempoRestanteHTML = `
-                <div class="tempo" style="color:red; font-weight:bold;">
-                ⏱️ EXPIRADO
-                </div>
-                <br>
-                `
+                    <div class="tempo" style="color:red; font-weight:bold;">
+                    ⏱️ EXPIRADO
+                    </div>
+                    <br>
+                    `
                 }
             }
         }
@@ -206,11 +205,10 @@ function renderizarReservas(listaReservas) {
         ${botoes}
         `
 
-        if (status === 'vendido') {
+        if (status === 'vendido')
             listaVendidos.appendChild(div)
-        } else if (status === 'reservado') {
+        else if (status === 'reservado')
             listaReservados.appendChild(div)
-        }
     })
 
     const disponiveis = 150 - vendidos - reservados

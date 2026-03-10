@@ -65,6 +65,18 @@ button:disabled {
     cursor: not-allowed;
 }
 
+a button {
+    background: #f44336;
+}
+
+#pixKey {
+    font-size: 95%;
+}
+
+#btnPix {
+    width: 100%;
+}
+
 .pix-box {
     display: flex;
     flex-direction: column;
@@ -75,6 +87,7 @@ button:disabled {
     padding: 10px;
     border-radius: 8px;
     margin: 10px 0;
+    text-align: center;
 }
 
 .pix-box span {
@@ -151,7 +164,6 @@ button:disabled {
 
     .pix-box {
         flex-direction: column;
-        align-items: flex-start;
     }
 
     .pix-box span {

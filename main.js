@@ -319,7 +319,7 @@ function updateCounter() {
     counter.innerText = `Disponíveis: ${disponiveis} | Reservados: ${reservados} | Vendidos: ${vendidos}`
 
     const ocupados = vendidos + reservados
-    atualizarBarra(150, 150)
+    atualizarBarra(ocupados, 150)
 }
 
 // TOAST

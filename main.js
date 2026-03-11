@@ -23,7 +23,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js'
 
 // Configurações do Firebase
-const firebaseConfig = {
+const FIREBASE_CONFIG = {
     apiKey: 'AIzaSyByikN6_CXfiJnb1_0ppP60oBQxN8zVxYA',
     authDomain: 'site-para-rifa-de-pascoa-25745.firebaseapp.com',
     projectId: 'site-para-rifa-de-pascoa-25745',
@@ -32,20 +32,20 @@ const firebaseConfig = {
     appId: '1:1004843167683:web:93211e8925926723c3d776'
 }
 
-const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
+const APP = initializeApp(FIREBASE_CONFIG)
+const DATABASE = getFirestore(APP)
 
 // DOM
-const numbersContainer = document.getElementById('numbers')
-const counter = document.getElementById('counter')
-const summary = document.getElementById('summary')
-const buyBtn = document.getElementById('buyBtn')
+const NUMBERS_CONTAINER = document.getElementById('numbers')
+const COUNTER = document.getElementById('counter')
+const SUMMARY = document.getElementById('summary')
+const BUY_BUTTON = document.getElementById('buyBtn')
 
 // CAMPO NOME
-const campoNome = document.getElementById('name')
+const CAMPO_NOME = document.getElementById('name')
 
 // FORÇAR NOME EM MAIÚSCULO
-campoNome.addEventListener('input', function () {
+CAMPO_NOME.addEventListener('input', function () {
     let nome = this.value
 
     nome = nome.replace(/[^A-Za-zÀ-ÿ\s]/g, '')
@@ -70,67 +70,67 @@ let comprando = false
 
 // CALCULAR EXPIRAÇÃO
 function calcularExpiracao() {
-    const agora = new Date()
+    const AGORA = new Date()
 
-    const inicio = new Date()
-    inicio.setHours(7, 30, 0, 0)
+    const INICIO = new Date()
+    INICIO.setHours(7, 30, 0, 0)
 
-    const fim = new Date()
-    fim.setHours(22, 0, 0, 0)
+    const FIM = new Date()
+    FIM.setHours(22, 0, 0, 0)
 
-    if (agora < inicio) {
-        return inicio.getTime() + TEMPO_EXPIRACAO
+    if (AGORA < INICIO) {
+        return INICIO.getTime() + TEMPO_EXPIRACAO
     }
 
-    if (agora >= fim) {
-        const proximoDia = new Date(inicio)
-        proximoDia.setDate(proximoDia.getDate() + 1)
+    if (AGORA >= FIM) {
+        const PROXIMO_DIA = new Date(INICIO)
+        PROXIMO_DIA.setDate(PROXIMO_DIA.getDate() + 1)
 
-        return proximoDia.getTime() + TEMPO_EXPIRACAO
+        return PROXIMO_DIA.getTime() + TEMPO_EXPIRACAO
     }
 
-    const expiracao = new Date(agora)
-    expiracao.setMinutes(expiracao.getMinutes() + 30)
+    const EXPIRACAO = new Date(AGORA)
+    EXPIRACAO.setMinutes(EXPIRACAO.getMinutes() + 30)
 
-    if (expiracao > fim) {
-        const proximoDia = new Date(inicio)
-        proximoDia.setDate(proximoDia.getDate() + 1)
+    if (EXPIRACAO > FIM) {
+        const PROXIMO_DIA = new Date(INICIO)
+        PROXIMO_DIA.setDate(PROXIMO_DIA.getDate() + 1)
 
-        return proximoDia.getTime() + TEMPO_EXPIRACAO
+        return PROXIMO_DIA.getTime() + TEMPO_EXPIRACAO
     }
 
-    return expiracao.getTime()
+    return EXPIRACAO.getTime()
 }
 
 // BARRA DE PROGRESSO
 function atualizarBarra(ocupados, total) {
-    const porcentagem = Math.round((ocupados / total) * 100);
+    const PORCENTAGEM = Math.round((ocupados / total) * 100);
 
-    document.getElementById("progresso").style.width = porcentagem + "%";
-    document.getElementById("porcentagem").innerText = porcentagem + "% Ocupados";
+    document.getElementById("progresso").style.width = PORCENTAGEM + "%";
+    document.getElementById("porcentagem").innerText = PORCENTAGEM + "% Ocupados";
 }
 
 // CONTADOR REGRESSIVO
 function iniciarContador() {
-    const dataSorteio = new Date("2026-04-03T00:00:00").getTime()
+    const DATA_SORTEIO = new Date("2026-04-03T00:00:00").getTime()
 
-    const intervalo = setInterval(() => {
-        const agora = new Date().getTime()
+    const INTERVALO = setInterval(() => {
+        const AGORA = new Date().getTime()
 
-        const distancia = dataSorteio - agora
+        const DISTANCIA = DATA_SORTEIO - AGORA
 
-        const dias = Math.floor(distancia / (1000 * 60 * 60 * 24))
-        const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-        const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60))
-        const segundos = Math.floor((distancia % (1000 * 60)) / 1000)
+        const DIAS = Math.floor(DISTANCIA / (1000 * 60 * 60 * 24))
+        const HORAS = Math.floor((DISTANCIA % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        const MINUTOS = Math.floor((DISTANCIA % (1000 * 60 * 60)) / (1000 * 60))
+        const SEGUNDOS = Math.floor((DISTANCIA % (1000 * 60)) / 1000)
 
-        document.getElementById("days").innerText = dias
-        document.getElementById("hours").innerText = horas
-        document.getElementById("minutes").innerText = minutos
-        document.getElementById("seconds").innerText = segundos
+        document.getElementById("days").innerText = DIAS
+        document.getElementById("hours").innerText = HORAS
+        document.getElementById("minutes").innerText = MINUTOS
+        document.getElementById("seconds").innerText = SEGUNDOS
 
-        if (distancia < 0) {
-            clearInterval(intervalo)
+        if (DISTANCIA < 0) {
+            clearInterval(INTERVALO)
             document.getElementById("countdown").innerHTML = "🎉 SORTEIO ENCERRADO!"
             animacaoSorteio()
         }
@@ -142,10 +142,10 @@ iniciarContador()
 // CONFETES
 function confete() {
     for (let i = 0; i < 120; i++) {
-        const confete = document.createElement("div")
-        confete.classList.add("confete")
+        const CONFETE = document.createElement("div")
+        CONFETE.classList.add("confete")
 
-        const cores = [
+        const CORES = [
             "#ff0000",
             "#ffd700",
             "#22c55e",
@@ -153,53 +153,53 @@ function confete() {
             "#ff69b4"
         ]
 
-        confete.style.background = cores[Math.floor(Math.random() * cores.length)]
+        CONFETE.style.background = CORES[Math.floor(Math.random() * CORES.length)]
 
-        confete.style.left = Math.random() * 100 + "vw"
+        CONFETE.style.left = Math.random() * 100 + "vw"
 
-        confete.style.animationDuration = (Math.random() * 3 + 3) + "s"
+        CONFETE.style.animationDuration = (Math.random() * 3 + 3) + "s"
 
-        confete.style.width = (Math.random() * 8 + 4) + "px"
-        confete.style.height = confete.style.width
+        CONFETE.style.width = (Math.random() * 8 + 4) + "px"
+        CONFETE.style.height = CONFETE.style.width
 
-        document.body.appendChild(confete)
+        document.body.appendChild(CONFETE)
 
         setTimeout(() => {
-            confete.remove()
+            CONFETE.remove()
         }, 6000)
     }
 }
 
 // ANIMAÇÃO SORTEIO
 function animacaoSorteio() {
-    const numeros = document.querySelectorAll(".number")
+    const NUMEROS = document.querySelectorAll(".number")
 
     let velocidade = 50
-    let rodadas = numeros.length * 3
+    let rodadas = NUMEROS.length * 3
     let atual = 0
 
     const intervalo = setInterval(() => {
-        numeros.forEach(n => {
+        NUMEROS.forEach(n => {
             n.style.background = ""
             n.style.color = ""
         })
 
-        numeros[atual].style.background = "#ffd700"
-        numeros[atual].style.color = "#000"
+        NUMEROS[atual].style.background = "#ffd700"
+        NUMEROS[atual].style.color = "#000"
 
         atual++
 
-        if (atual >= numeros.length) atual = 0
+        if (atual >= NUMEROS.length) atual = 0
 
         rodadas--
 
         if (rodadas <= 0) {
             clearInterval(intervalo)
 
-            const vencedor = Math.floor(Math.random() * numeros.length)
+            const VENCEDOR = Math.floor(Math.random() * NUMEROS.length)
 
-            numeros[vencedor].style.background = "#22c55e"
-            numeros[vencedor].style.color = "#fff"
+            NUMEROS[VENCEDOR].style.background = "#22c55e"
+            NUMEROS[VENCEDOR].style.color = "#fff"
 
             confete()
         }
@@ -208,28 +208,28 @@ function animacaoSorteio() {
 
 // CARREGAR NÚMEROS
 function loadNumbers() {
-    onSnapshot(collection(db, 'rifa'), async (querySnapshot) => {
+    onSnapshot(collection(DATABASE, 'rifa'), async (querySnapshot) => {
         if (comprando) return
         soldNumbers = new Set()
         reservedNumbers = new Set()
 
-        const agora = Date.now()
+        const AGORA = Date.now()
 
         for (const docSnap of querySnapshot.docs) {
-            const data = docSnap.data()
-            const status = (data.status || "").toLowerCase()
-            const numero = Number(data.number)
+            const DATA = docSnap.data()
+            const STATUS = (DATA.status || "").toLowerCase()
+            const NUMERO = Number(DATA.number)
 
-            if (status === STATUS.RESERVADO) {
-                if (data.expiresAt && agora > data.expiresAt) {
+            if (STATUS === STATUS.RESERVADO) {
+                if (DATA.expiresAt && AGORA > DATA.expiresAt) {
                     // REMOVE RESERVA EXPIRADA
-                    await deleteDoc(doc(db, 'rifa', numero.toString()))
+                    await deleteDoc(doc(DATABASE, 'rifa', NUMERO.toString()))
                     continue
                 }
 
-                reservedNumbers.add(numero)
-            } else if (status === STATUS.VENDIDO) {
-                soldNumbers.add(numero)
+                reservedNumbers.add(NUMERO)
+            } else if (STATUS === STATUS.VENDIDO) {
+                soldNumbers.add(NUMERO)
             }
         }
 
@@ -240,24 +240,24 @@ function loadNumbers() {
 
 // CRIAR NÚMEROS
 function createNumbers() {
-    numbersContainer.innerHTML = ''
+    NUMBERS_CONTAINER.innerHTML = ''
 
-    const fragment = document.createDocumentFragment()
+    const FRAGMENT = document.createDocumentFragment()
 
     for (let i = 1; i <= 150; i++) {
-        const div = document.createElement('div')
+        const DIV = document.createElement('div')
 
-        div.classList.add('number')
-        div.innerText = i
+        DIV.classList.add('number')
+        DIV.innerText = i
 
         if (soldNumbers.has(i))
-            div.classList.add('sold')
+            DIV.classList.add('sold')
         else if (reservedNumbers.has(i))
-            div.classList.add('reserved')
+            DIV.classList.add('reserved')
 
-        if (selectedNumbers.includes(i)) div.classList.add('selected')
+        if (selectedNumbers.includes(i)) DIV.classList.add('selected')
 
-        div.addEventListener('click', () => {
+        DIV.addEventListener('click', () => {
             if (soldNumbers.has(i) || reservedNumbers.has(i)) {
                 showToast("Esse número já está reservado ou vendido.")
                 return
@@ -265,26 +265,26 @@ function createNumbers() {
 
             if (selectedNumbers.includes(i)) {
                 selectedNumbers = selectedNumbers.filter(n => n !== i)
-                div.classList.remove('selected')
+                DIV.classList.remove('selected')
             } else {
                 selectedNumbers.push(i)
-                div.classList.add('selected')
+                DIV.classList.add('selected')
             }
 
             updateSummary()
         })
 
-        fragment.appendChild(div)
+        FRAGMENT.appendChild(DIV)
     }
 
-    numbersContainer.appendChild(fragment)
+    NUMBERS_CONTAINER.appendChild(FRAGMENT)
 }
 
 // COPIAR PIX
 function copiarPix() {
-    const chave = document.getElementById("pixKey").innerText;
+    const CHAVE = document.getElementById("pixKey").innerText;
 
-    navigator.clipboard.writeText(chave)
+    navigator.clipboard.writeText(CHAVE)
         .then(() => {
             showToast("Chave PIX copiada!");
         })
@@ -298,28 +298,28 @@ window.copiarPix = copiarPix
 // RESUMO
 function updateSummary() {
     if (selectedNumbers.length === 0) {
-        summary.innerText = 'Nenhum número selecionado.'
+        SUMMARY.innerText = 'Nenhum número selecionado.'
         return
     }
 
-    const total = (selectedNumbers.length * 3.5).toFixed(2)
+    const TOTAL = (selectedNumbers.length * 3.5).toFixed(2)
 
-    summary.innerHTML = `
+    SUMMARY.innerHTML = `
     Números: <strong>${selectedNumbers.join(', ')}</strong><br>
-    Total: <strong>R$ ${total}</strong>
+    Total: <strong>R$ ${TOTAL}</strong>
     `
 }
 
 // CONTADOR
 function updateCounter() {
-    const vendidos = soldNumbers.size
-    const reservados = reservedNumbers.size
-    const disponiveis = 150 - vendidos - reservados
+    const VENDIDOS = soldNumbers.size
+    const RESERVADOS = reservedNumbers.size
+    const DISPONIVEIS = 150 - VENDIDOS - RESERVADOS
 
-    counter.innerText = `Disponíveis: ${disponiveis} | Reservados: ${reservados} | Vendidos: ${vendidos}`
+    COUNTER.innerText = `Disponíveis: ${DISPONIVEIS} | Reservados: ${RESERVADOS} | Vendidos: ${VENDIDOS}`
 
-    const ocupados = vendidos + reservados
-    atualizarBarra(ocupados, 150)
+    const OCUPADOS = VENDIDOS + RESERVADOS
+    atualizarBarra(OCUPADOS, 150)
 }
 
 // TOAST
@@ -339,38 +339,38 @@ function showToast(msg, duration = 3000) {
 }
 
 // RESERVAR
-buyBtn.addEventListener('click', async () => {
-    const name = document.getElementById('name').value.trim()
-    const turma = document.getElementById('turma').value.trim()
+BUY_BUTTON.addEventListener('click', async () => {
+    const NAME = document.getElementById('name').value.trim()
+    const TURMA = document.getElementById('turma').value.trim()
 
     if (selectedNumbers.length === 0) return showToast('Selecione um número.')
 
-    if (!name) return showToast('Digite seu nome.')
+    if (!NAME) return showToast('Digite seu nome.')
 
-    if (!turma) return showToast('Escolha sua turma.')
+    if (!TURMA) return showToast('Escolha sua turma.')
 
-    buyBtn.disabled = true
+    BUY_BUTTON.disabled = true
 
     try {
         for (let number of selectedNumbers) {
-            const ref = doc(db, 'rifa', number.toString())
+            const REF = doc(DATABASE, 'rifa', number.toString())
 
-            await runTransaction(db, async (transaction) => {
-                const snap = await transaction.get(ref)
+            await runTransaction(DATABASE, async (transaction) => {
+                const SNAP = await transaction.get(REF)
 
-                if (snap.exists()) {
-                    const data = snap.data()
-                    const status = (data.status || "").toLowerCase()
+                if (SNAP.exists()) {
+                    const DATA = SNAP.data()
+                    const STATUS = (DATA.status || "").toLowerCase()
 
-                    if (status === STATUS.VENDIDO) throw new Error()
-                    if (status === STATUS.RESERVADO && Date.now() < data.expiresAt) throw new Error()
+                    if (STATUS === STATUS.VENDIDO) throw new Error()
+                    if (STATUS === STATUS.RESERVADO && Date.now() < DATA.expiresAt) throw new Error()
 
-                    transaction.delete(ref)
+                    transaction.delete(REF)
                 }
 
-                transaction.set(ref, {
-                    name,
-                    turma,
+                transaction.set(REF, {
+                    name: NAME,
+                    turma: TURMA,
                     number,
                     status: STATUS.RESERVADO,
                     createdAt: Date.now(),
@@ -380,8 +380,8 @@ buyBtn.addEventListener('click', async () => {
         }
 
         localStorage.setItem('numeros', JSON.stringify(selectedNumbers))
-        localStorage.setItem('nome', name)
-        localStorage.setItem('turma', turma)
+        localStorage.setItem('nome', NAME)
+        localStorage.setItem('turma', TURMA)
         localStorage.setItem('createdAt', Date.now())
 
         comprando = true
@@ -393,7 +393,7 @@ buyBtn.addEventListener('click', async () => {
         }, 2000)
     } catch {
         showToast('Um dos números já foi reservado.')
-        buyBtn.disabled = false
+        BUY_BUTTON.disabled = false
     }
 })
 

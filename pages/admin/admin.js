@@ -63,7 +63,7 @@ async function loginAdmin() {
         await signInWithEmailAndPassword(auth, email, senha)
     } catch (error) {
         alert('Login incorreto.')
-        window.location.href = '../index.html'
+        window.location.href = '../../index.html'
     }
 }
 

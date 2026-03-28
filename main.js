@@ -109,7 +109,7 @@ function atualizarBarra(ocupados, total) {
     const porcentagem = Math.round((ocupados / total) * 100);
 
     document.getElementById("progresso").style.width = porcentagem + "%";
-    document.getElementById("porcentagem").innerText = porcentagem + "% Ocupados";
+    document.getElementById("porcentagem").textContent = porcentagem + "% Ocupados";
 }
 
 // CONTADOR REGRESSIVO
@@ -126,14 +126,22 @@ function iniciarContador() {
         const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60))
         const segundos = Math.floor((distancia % (1000 * 60)) / 1000)
 
-        document.getElementById("days").innerText = dias
-        document.getElementById("hours").innerText = horas
-        document.getElementById("minutes").innerText = minutos
-        document.getElementById("seconds").innerText = segundos
+        document.getElementById("days").textContent = dias
+        document.getElementById("hours").textContent = horas
+        document.getElementById("minutes").textContent = minutos
+        document.getElementById("seconds").textContent = segundos
 
         if (distancia < 0) {
             clearInterval(intervalo)
-            document.getElementById("countdown").innerHTML = "🎉 SORTEIO ENCERRADO!"
+
+            const countdown = document.getElementById("countdown")
+
+            countdown.textContent = ''
+            const span = document.createElement('span')
+            span.textContent = "🎉 SORTEIO ENCERRADO!"
+
+            countdown.appendChild(span)
+
             animacaoSorteio()
         }
     }, 1000)
@@ -242,7 +250,7 @@ function loadNumbers() {
 
 // CRIAR NÚMEROS
 function createNumbers() {
-    numbersContainer.innerHTML = ''
+    numbersContainer.replaceChildren()
 
     const fragment = document.createDocumentFragment()
 
@@ -250,7 +258,7 @@ function createNumbers() {
         const div = document.createElement('div')
 
         div.classList.add('number')
-        div.innerText = i
+        div.textContent = i
 
         if (soldNumbers.has(i))
             div.classList.add('sold')
@@ -284,7 +292,7 @@ function createNumbers() {
 
 // COPIAR PIX
 function copiarPix() {
-    const chave = document.getElementById("pixKey").innerText;
+    const chave = document.getElementById("pixKey").textContent;
 
     navigator.clipboard.writeText(chave)
         .then(() => {
@@ -300,16 +308,29 @@ window.copiarPix = copiarPix
 // RESUMO
 function updateSummary() {
     if (selectedNumbers.length === 0) {
-        summary.innerText = 'Nenhum número selecionado.'
+        summary.textContent = 'Nenhum número selecionado.'
         return
     }
 
     const total = (selectedNumbers.length * 3.5).toFixed(2)
 
-    summary.innerHTML = `
-    Números: <strong>${selectedNumbers.join(', ')}</strong><br>
-    Total: <strong>R$ ${total}</strong>
-    `
+    summary.replaceChildren()
+
+    const numerosText = document.createTextNode('Números: ')
+    const strongNumeros = document.createElement('strong')
+    strongNumeros.textContent = selectedNumbers.join(', ')
+
+    const br = document.createElement('br')
+
+    const totalText = document.createTextNode('Total: ')
+    const strongTotal = document.createElement('strong')
+    strongTotal.textContent = `R$ ${total}`
+
+    summary.appendChild(numerosText)
+    summary.appendChild(strongNumeros)
+    summary.appendChild(br)
+    summary.appendChild(totalText)
+    summary.appendChild(strongTotal)
 }
 
 // CONTADOR
@@ -318,7 +339,7 @@ function updateCounter() {
     const reservados = reservedNumbers.size
     const disponiveis = qtdeNumeros - vendidos - reservados
 
-    counter.innerText = `Disponíveis: ${disponiveis} | Reservados: ${reservados} | Vendidos: ${vendidos}`
+    counter.textContent = `Disponíveis: ${disponiveis} | Reservados: ${reservados} | Vendidos: ${vendidos}`
 
     const ocupados = vendidos + reservados
     atualizarBarra(ocupados, qtdeNumeros)
@@ -329,7 +350,7 @@ function showToast(msg, duration = 3000) {
     let toast = document.createElement('div')
 
     toast.className = 'toast'
-    toast.innerText = msg
+    toast.textContent = msg
 
     document.body.appendChild(toast)
 

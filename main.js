@@ -114,7 +114,7 @@ function atualizarBarra(ocupados, total) {
 
 // CONTADOR REGRESSIVO
 function iniciarContador() {
-    const dataSorteio = new Date("2026-04-03T00:00:00").getTime()
+    const dataSorteio = new Date("2026-04-02T11:30:00").getTime()
 
     const intervalo = setInterval(() => {
         const agora = new Date().getTime()
